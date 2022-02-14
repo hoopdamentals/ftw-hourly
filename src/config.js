@@ -69,7 +69,8 @@ const sdkTransitVerbose = process.env.REACT_APP_SHARETRIBE_SDK_TRANSIT_VERBOSE =
 
 // Marketplace currency.
 // It should match one of the currencies listed in currency-config.js
-const currencyConf = process.env.REACT_APP_SHARETRIBE_MARKETPLACE_CURRENCY;
+// const currencyConf = process.env.REACT_APP_SHARETRIBE_MARKETPLACE_CURRENCY;
+const currencyConf = 'USD';
 const currency = currencyConf ? currencyConf.toUpperCase() : currencyConf;
 
 // Currency formatting options.
