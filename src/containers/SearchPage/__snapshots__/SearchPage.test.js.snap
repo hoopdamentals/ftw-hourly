@@ -113,10 +113,10 @@ exports[`SearchPageComponent matches snapshot 1`] = `
               "searchMode": "has_all",
             },
             "group": "secondary",
-            "id": "yogaStyles",
-            "label": "Yoga styles",
+            "id": "basketballSkills",
+            "label": "Basketball skills",
             "queryParamNames": Array [
-              "pub_yogaStyles",
+              "pub_basketballSkills",
             ],
             "type": "SelectMultipleFilter",
           },

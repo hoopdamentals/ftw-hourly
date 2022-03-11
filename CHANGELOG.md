@@ -530,7 +530,7 @@ Update from upstream (first 3 bullets) and a couple of pending changes.
 - [fix] Fix `console.warn` functions. [#1252](https://github.com/sharetribe/ftw-daily/pull/1252)
 - [add] Add missing countries (e.g. MX and JP) to `StripeBankAccountTokenInput` validations.
   [#1250](https://github.com/sharetribe/ftw-daily/pull/1250)
-- [add] Add French and Spanish translations for yogatime
+- [add] Add French and Spanish translations for hoopdamentals
   [#72](https://github.com/sharetribe/ftw-hourly/pull/72)
 - [fix] Fix bug in showing availability exceptions. This bug was introduced in v6.0.0.
   [#71](https://github.com/sharetribe/ftw-hourly/pull/71)
@@ -607,7 +607,7 @@ from Flex docs: https://www.sharetribe.com/docs/guides/how-to-set-up-csp-for-ftw
 ## [v5.0.0] 2019-11-21
 
 This release creates lots of changes to the default logic (only one listing aka teacher profile
-allowed), translations files (Saunatime is changed to Yogatime), and it also adds
+allowed), translations files (Saunatime is changed to HoopDaMentals), and it also adds
 AvailabilityExceptions to EditListingAvailabilityPanel. If you have started with the original Flex
 Template for Web, you need to be extra careful when you switch to this release, since there are pull
 request that you might need to revert when you take update from upstream. (E.g. you might want to
@@ -617,7 +617,7 @@ allow multiple listings in your marketplace.)
   changed to "sessions") [#55](https://github.com/sharetribe/ftw-time/pull/55)
 - [fix] Reseting bookingStartDate picker didn't reset the current month.
   [#54](https://github.com/sharetribe/ftw-time/pull/54)
-- [change] Yogatime UI tweaks.
+- [change] HoopDaMentals UI tweaks.
 
   - Change hard-coded "sauna" strings and rules tab in EditListingWizard.
   - Change font-size in Avatar.
@@ -640,8 +640,8 @@ allow multiple listings in your marketplace.)
   when data is loading so that the footer stays in place.
   [#49](https://github.com/sharetribe/ftw-time/pull/49)
 - [change] Changes to `ListingPage` desing: make header image full width and avatar bigger, show
-  only selected yoga styles, move price from `SectionHeading` to Panel and remove hosted by text and
-  the whole `SectionHostMaybe`. We also moved the `Modal` with `EnquiryForm` directly to
+  only selected basketball skills, move price from `SectionHeading` to Panel and remove hosted by
+  text and the whole `SectionHostMaybe`. We also moved the `Modal` with `EnquiryForm` directly to
   `ListingPage`. [#46](https://github.com/sharetribe/ftw-time/pull/46)
 - [add] EditListingAvailabilityPanel: add list of current AvailabilityExceptions and edit form in
   modal. [#45](https://github.com/sharetribe/ftw-time/pull/45)
@@ -650,8 +650,8 @@ allow multiple listings in your marketplace.)
 - [change] Change images and update favicons. Also, update links on the `LandingPage`. Make the
   `OwnListingLink` component more generic so that it can be used also in the `SectionHowItWorks`.
   [#42](https://github.com/sharetribe/ftw-time/pull/42/)
-- [change] Replace amenities with yoga styles and category with certificate in search filters and
-  EditListingEizard. Show the updated public data also on ListingPage. Add new flags
+- [change] Replace amenities with basketball skills and category with certificate in search filters
+  and EditListingEizard. Show the updated public data also on ListingPage. Add new flags
   `hideFromFilters` and `hideFromListingInfo` to certificate filter in
   `marketplace-custom-config.js`. These new flags are used to determine if the value shoud be
   visible in search filters or listing info (ListingPage and ListingCard).
@@ -666,7 +666,7 @@ allow multiple listings in your marketplace.)
   [#38](https://github.com/sharetribe/ftw-time/pull/38)
 - [change] Hide inbox tabs if user doesn't have a listing.
   [#37](https://github.com/sharetribe/ftw-time/pull/37)
-- [change] Change the logo, marketplace color and favicons from Saunatime to Yogatime.
+- [change] Change the logo, marketplace color and favicons from Saunatime to HoopDaMentals.
   [#36](https://github.com/sharetribe/ftw-time/pull/36)
 - [change] Change the default locations used in `Topbar` and `Footer`.
   [#35](https://github.com/sharetribe/ftw-time/pull/35)

@@ -8,30 +8,29 @@ import { requiredFieldArrayCheckbox } from '../../util/validators';
 const formName = 'Styleguide.FieldCheckboxGroup';
 const formNameRequired = 'Styleguide.FieldCheckboxGroupRequired';
 
-const label = <h3>Yoga styles</h3>;
+const label = <h3>Basketball skills</h3>;
 
 const commonProps = {
   label: label,
   options: [
-    { key: 'ashtanga', label: 'Ashtanga' },
-    { key: 'hatha', label: 'Hatha' },
-    { key: 'kundalini', label: 'Kundalini' },
-    { key: 'restorative', label: 'Restorative' },
-    { key: 'vinyasa', label: 'Vinyasa' },
-    { key: 'yin', label: 'yin' },
+    { key: 'shooting', label: 'Shooting' },
+    { key: 'ball_handling', label: 'Ball Handling' },
+    { key: 'rebounding', label: 'Rebounding' },
+    { key: 'passing', label: 'Passing' },
+    { key: 'agility', label: 'Agility' },
   ],
   twoColumns: true,
 };
 
 const optionalProps = {
-  name: 'yogaStyles-optional',
-  id: 'yogaStyles-optional',
+  name: 'basketballSkills-optional',
+  id: 'basketballSkills-optional',
   ...commonProps,
 };
 
 const requiredProps = {
-  name: 'yogaStyles-required',
-  id: `${formNameRequired}.yogaStyles-required`,
+  name: 'basketballSkills-required',
+  id: `${formNameRequired}.basketballSkills-required`,
   ...commonProps,
   validate: requiredFieldArrayCheckbox('this is required'),
 };

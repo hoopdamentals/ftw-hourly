@@ -38,11 +38,11 @@ const filterConfig = [
     },
   },
   {
-    id: 'yogaStyles',
-    label: 'yogaStyles',
+    id: 'basketballSkills',
+    label: 'basketballSkills',
     type: 'SelectMultipleFilter',
     group: 'secondary',
-    queryParamName: 'pub_yogaStyles',
+    queryParamName: 'pub_basketballSkills',
     config: {
       mode: 'has_all',
       options: [

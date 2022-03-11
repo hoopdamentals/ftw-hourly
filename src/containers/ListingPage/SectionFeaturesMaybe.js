@@ -10,7 +10,8 @@ const SectionFeaturesMaybe = props => {
     return null;
   }
 
-  const selectedOptions = publicData && publicData.yogaStyles ? publicData.yogaStyles : [];
+  const selectedOptions =
+    publicData && publicData.basketballSkills ? publicData.basketballSkills : [];
   const selectedConfigOptions = options.filter(o => selectedOptions.find(s => s === o.key));
 
   return (
@@ -19,7 +20,7 @@ const SectionFeaturesMaybe = props => {
         <FormattedMessage id="ListingPage.featuresTitle" />
       </h2>
       <PropertyGroup
-        id="ListingPage.yogaStyles"
+        id="ListingPage.basketballSkills"
         options={selectedConfigOptions}
         selectedOptions={selectedOptions}
         twoColumns={selectedConfigOptions.length > 5}

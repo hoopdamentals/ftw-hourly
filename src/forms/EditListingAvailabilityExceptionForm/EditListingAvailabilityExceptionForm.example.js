@@ -8,7 +8,7 @@ export const Example = {
   props: {
     formId: 'EditListingAvailabilityExceptionFormExample',
     availabilityExceptions: [],
-    listingTitle: 'Yoga guru',
+    listingTitle: 'Coach',
     weekdays: WEEKDAYS,
     onSubmit(values) {
       console.log('submit with values:', values);

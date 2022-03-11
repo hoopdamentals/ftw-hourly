@@ -1,38 +1,37 @@
 import EditListingFeaturesForm from './EditListingFeaturesForm';
 
-const NAME = 'yogaStyles';
+const NAME = 'basketballSkills';
 
 const initialValueArray = ['hatha', 'vinyasa', 'yin'];
 const initialValues = { [NAME]: initialValueArray };
 
 const filterConfig = [
   {
-    id: 'yogaStyles',
-    label: 'Yoga styles',
+    id: 'basketballSkills',
+    label: 'Basketball skills',
     type: 'SelectMultipleFilter',
     group: 'secondary',
-    queryParamNames: ['pub_yogaStyles'],
+    queryParamNames: ['pub_basketballSkills'],
     config: {
       mode: 'has_all',
       options: [
-        { key: 'ashtanga', label: 'Ashtanga' },
-        { key: 'hatha', label: 'Hatha' },
-        { key: 'kundalini', label: 'Kundalini' },
-        { key: 'restorative', label: 'Restorative' },
-        { key: 'vinyasa', label: 'Vinyasa' },
-        { key: 'yin', label: 'Yin' },
+        { key: 'shooting', label: 'Shooting' },
+        { key: 'ball_handling', label: 'Ball Handling' },
+        { key: 'rebounding', label: 'Rebounding' },
+        { key: 'passing', label: 'Passing' },
+        { key: 'agility', label: 'Agility' },
       ],
     },
   },
 ];
 
-export const YogaStyles = {
+export const BasketballSkills = {
   component: EditListingFeaturesForm,
   props: {
     name: NAME,
     onSubmit: values => console.log('EditListingFeaturesForm submit:', values),
     initialValues: initialValues,
-    saveActionMsg: 'Save yoga styles',
+    saveActionMsg: 'Save basketball skills',
     updated: false,
     updateInProgress: false,
     disabled: false,
