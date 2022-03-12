@@ -74,6 +74,8 @@
 }
 .searchMenu {
   padding: 12px 24px;
+  /*Hides search bar on desktop*/
+  visibility: hidden;
 }
 
 .menuIcon,

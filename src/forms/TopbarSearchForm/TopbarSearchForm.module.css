@@ -6,6 +6,9 @@
 
 .desktopInputRoot {
   height: var(--topbarHeightDesktop);
+
+  /*Hides search bar on desktop*/
+  visibility: hidden;
 }
 
 .mobileIcon {
