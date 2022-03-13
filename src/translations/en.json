@@ -50,7 +50,7 @@
   "BookingBreakdown.baseUnitQuantity": "{unitPrice} * {quantity, number} {quantity, plural, one {session} other {sessions}}",
   "BookingBreakdown.bookingEnd": "Booking end",
   "BookingBreakdown.bookingStart": "Booking start",
-  "BookingBreakdown.commission": "HoopDaMentals fee *",
+  "BookingBreakdown.commission": "Processing fee *",
   "BookingBreakdown.commissionFeeNote": "* The fee helps us run the platform and provide the best possible service to you!",
   "BookingBreakdown.dayCount": "{count, number} {count, plural, one {day} other {days}}",
   "BookingBreakdown.nightCount": "{count, number} {count, plural, one {night} other {nights}}",
