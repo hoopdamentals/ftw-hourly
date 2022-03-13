@@ -36,7 +36,7 @@
 
     * flex-basis: calc((100%/columnCount) - (guttersBetweenColumns / columnCount))
     */
-    flex-basis: calc(50% - 12px);
+    flex-basis: calc(25% - 12px);
     margin-right: 24px;
   }
 
@@ -56,7 +56,7 @@
      * flex-basis: calc((100%/columnCount) - (guttersBetweenColumns / columnCount))
      */
 
-    flex-basis: calc(33.33% - 16px);
+    flex-basis: calc(16.66% - 16px);
     margin-right: 24px;
   }
 }

@@ -138,8 +138,9 @@ export class SearchPageComponent extends Component {
 
     const isWindowDefined = typeof window !== 'undefined';
     const isMobileLayout = isWindowDefined && window.innerWidth < MODAL_BREAKPOINT;
-    const shouldShowSearchMap =
-      !isMobileLayout || (isMobileLayout && this.state.isSearchMapOpenOnMobile);
+    // const shouldShowSearchMap =
+    //   !isMobileLayout || (isMobileLayout && this.state.isSearchMapOpenOnMobile);
+    const shouldShowSearchMap = false;
 
     const onMapIconClick = () => {
       this.useLocationSearchBounds = true;
