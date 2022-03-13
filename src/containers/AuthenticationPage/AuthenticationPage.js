@@ -265,6 +265,7 @@ export class AuthenticationPageComponent extends Component {
     console.log('Environment Vars');
     console.log(process.env);
     console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
+    console.log(process.env.GOOGLE_CLIENT_SECRET);
 
     const facebookButtonText = isLogin ? (
       <FormattedMessage id="AuthenticationPage.loginWithFacebook" />
