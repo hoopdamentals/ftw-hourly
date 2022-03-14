@@ -4,6 +4,11 @@
   & p {
     @apply --marketplaceH4FontStyles;
   }
+  & ul {
+    @apply --marketplaceH4FontStyles;
+    list-style-type: disc;
+    padding-left: 25px;
+  }
   & h2 {
     /* Adjust heading margins to work with the reduced body font size */
     margin: 29px 0 13px 0;
