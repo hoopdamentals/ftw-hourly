@@ -100,6 +100,12 @@ const TopbarMobileMenu = props => {
           <FormattedMessage id="TopbarMobileMenu.inboxLink" />
           {notificationCountBadge}
         </NamedLink>
+        <NamedLink
+          className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
+          name="ManageListingsPage"
+        >
+          <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
+        </NamedLink>
         <OwnListingLink
           listing={currentUserListing}
           listingFetched={currentUserListingFetched}

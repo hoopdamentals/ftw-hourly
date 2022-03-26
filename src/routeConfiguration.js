@@ -19,6 +19,7 @@ const EmailVerificationPage = loadable(() => import(/* webpackChunkName: "EmailV
 const InboxPage = loadable(() => import(/* webpackChunkName: "InboxPage" */ './containers/InboxPage/InboxPage'));
 const LandingPage = loadable(() => import(/* webpackChunkName: "LandingPage" */ './containers/LandingPage/LandingPage'));
 const ListingPage = loadable(() => import(/* webpackChunkName: "ListingPage" */ /* webpackPrefetch: true */ './containers/ListingPage/ListingPage'));
+const ManageListingsPage = loadable(() => import(/* webpackChunkName: "ManageListingsPage" */ /* webpackPrefetch: true */ './containers/ManageListingsPage/ManageListingsPage'));
 const PasswordChangePage = loadable(() => import(/* webpackChunkName: "PasswordChangePage" */ './containers/PasswordChangePage/PasswordChangePage'));
 const PasswordRecoveryPage = loadable(() => import(/* webpackChunkName: "PasswordRecoveryPage" */ './containers/PasswordRecoveryPage/PasswordRecoveryPage'));
 const PasswordResetPage = loadable(() => import(/* webpackChunkName: "PasswordResetPage" */ './containers/PasswordResetPage/PasswordResetPage'));
@@ -114,8 +115,7 @@ const routeConfiguration = () => {
       path: '/l/:slug/:id/:type/:tab',
       name: 'EditListingPage',
       auth: true,
-      component: EditListingPage,
-      extraProps: { allowOnlyOneListing: true },
+      component: EditListingPage,      
       loadData: pageDataLoadingAPI.EditListingPage.loadData,
     },
     {
@@ -211,6 +211,14 @@ const routeConfiguration = () => {
       loadData: params =>
         pageDataLoadingAPI.TransactionPage.loadData({ ...params, transactionRole: 'customer' }),
       setInitialValues: pageDataLoadingAPI.TransactionPage.setInitialValues,
+    },
+    {
+      path: '/listings',
+      name: 'ManageListingsPage',
+      auth: true,
+      authPage: 'LoginPage',
+      component: props => <ManageListingsPage {...props} />,
+      loadData: ManageListingsPage.loadData,
     },
     {
       path: '/sale/:id',

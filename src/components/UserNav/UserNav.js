@@ -50,6 +50,13 @@ const UserNav = props => {
       ...listingTab(listing, selectedPageName),
     },
     {
+      text: <FormattedMessage id="UserNav.yourListings" />,
+      selected: selectedPageName === 'ManageListingsPage',
+      linkProps: {
+        name: 'ManageListingsPage',
+      },
+    },
+    {
       text: <FormattedMessage id="UserNav.profileSettingsPage" />,
       selected: selectedPageName === 'ProfileSettingsPage',
       disabled: false,
