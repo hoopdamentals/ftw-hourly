@@ -30,6 +30,7 @@ export const LandingPageComponent = props => {
     intl,
     location,
     scrollingDisabled,
+    currentUser,
     currentUserListing,
     currentUserListingFetched,
   } = props;
@@ -78,6 +79,7 @@ export const LandingPageComponent = props => {
             <li className={css.section}>
               <div className={css.sectionContent}>
                 <SectionHowItWorks
+                  currentUser={currentUser}
                   currentUserListing={currentUserListing}
                   currentUserListingFetched={currentUserListingFetched}
                 />
@@ -94,12 +96,14 @@ export const LandingPageComponent = props => {
 };
 
 LandingPageComponent.defaultProps = {
+  currentUser: null,
   currentUserListing: null,
   currentUserListingFetched: false,
 };
 
 LandingPageComponent.propTypes = {
   scrollingDisabled: bool.isRequired,
+  currentUser: propTypes.currentUser,
   currentUserListing: propTypes.ownListing,
   currentUserListingFetched: bool,
 
@@ -112,10 +116,11 @@ LandingPageComponent.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const { currentUserListing, currentUserListingFetched } = state.user;
+  const { currentUser, currentUserListing, currentUserListingFetched } = state.user;
 
   return {
     scrollingDisabled: isScrollingDisabled(state),
+    currentUser,
     currentUserListing,
     currentUserListingFetched,
   };

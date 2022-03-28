@@ -13,6 +13,7 @@ import {
   LISTING_PAGE_PENDING_APPROVAL_VARIANT,
 } from '../../util/urlHelpers';
 import { fetchCurrentUser, fetchCurrentUserHasOrdersSuccess } from '../../ducks/user.duck';
+import { queryUserListings } from '../ProfilePage/ProfilePage.duck';
 
 const { UUID } = sdkTypes;
 
@@ -353,8 +354,8 @@ export const loadData = (params, search) => dispatch => {
     return dispatch(showListing(listingId, true));
   }
 
-  return Promise.all([dispatch(showListing(listingId)), dispatch(fetchReviews(listingId))]).then(
-    responses => {
+  return Promise.all([dispatch(showListing(listingId)), dispatch(fetchReviews(listingId))])
+    .then(responses => {
       if (responses[0] && responses[0].data && responses[0].data.data) {
         const listing = responses[0].data.data;
 
@@ -362,8 +363,16 @@ export const loadData = (params, search) => dispatch => {
         // This can happen parallel to loadData.
         // We are not interested to return them from loadData call.
         fetchMonthlyTimeSlots(dispatch, listing);
+
+        // console.log(listing);
+
+        // const userId = new UUID(listing.relationships.author.data.id.uuid);
+        // console.log(userId);
+        // dispatch(queryUserListings(userId));
       }
       return responses;
-    }
-  );
+    })
+    .catch(e => {
+      throw e;
+    });
 };

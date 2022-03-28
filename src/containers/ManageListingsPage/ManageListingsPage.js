@@ -201,8 +201,8 @@ const mapStateToProps = state => {
   } = state.ManageListingsPage;
   const listings = getOwnListingsById(state, currentPageResultIds);
 
-  console.log('listings');
-  console.log(listings);
+  // console.log('listings');
+  // console.log(listings);
 
   return {
     currentPageResultIds,

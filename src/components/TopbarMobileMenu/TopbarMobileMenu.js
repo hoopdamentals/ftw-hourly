@@ -107,6 +107,7 @@ const TopbarMobileMenu = props => {
           <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
         </NamedLink>
         <OwnListingLink
+          user={currentUser}
           listing={currentUserListing}
           listingFetched={currentUserListingFetched}
           className={css.navigationLink}

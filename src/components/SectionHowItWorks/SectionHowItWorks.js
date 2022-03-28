@@ -8,7 +8,13 @@ import { OwnListingLink } from '../../components';
 import css from './SectionHowItWorks.module.css';
 
 const SectionHowItWorks = props => {
-  const { rootClassName, className, currentUserListing, currentUserListingFetched } = props;
+  const {
+    rootClassName,
+    className,
+    currentUser,
+    currentUserListing,
+    currentUserListingFetched,
+  } = props;
 
   const classes = classNames(rootClassName || css.root, className);
   return (
@@ -48,7 +54,11 @@ const SectionHowItWorks = props => {
         </div>
       </div>
       <div className={css.createListingLink}>
-        <OwnListingLink listing={currentUserListing} listingFetched={currentUserListingFetched}>
+        <OwnListingLink
+          user={currentUser}
+          listing={currentUserListing}
+          listingFetched={currentUserListingFetched}
+        >
           <FormattedMessage id="SectionHowItWorks.createListingLink" />
         </OwnListingLink>
       </div>
@@ -59,6 +69,7 @@ const SectionHowItWorks = props => {
 SectionHowItWorks.defaultProps = {
   rootClassName: null,
   className: null,
+  currentUser: null,
   currentUserListing: null,
   currentUserListingFetched: false,
 };
@@ -66,6 +77,7 @@ SectionHowItWorks.defaultProps = {
 SectionHowItWorks.propTypes = {
   rootClassName: string,
   className: string,
+  currentUser: propTypes.currentUser,
   currentUserListing: propTypes.ownListing,
   currentUserListingFetched: bool,
 };
