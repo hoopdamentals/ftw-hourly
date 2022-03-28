@@ -128,6 +128,7 @@ export const EditListingPageComponent = props => {
     return <NamedRedirect {...redirectProps} />;
   } else if (allowOnlyOneListing && isNewURI && currentUserListingFetched && currentUserListing) {
     // If we allow only one listing per provider, we need to redirect to correct listing.
+    console.log('allowOnlyOneListing');
     return (
       <NamedRedirect
         name="EditListingPage"

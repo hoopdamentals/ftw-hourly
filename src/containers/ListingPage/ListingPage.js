@@ -259,10 +259,6 @@ export class ListingPageComponent extends Component {
       </span>
     );
 
-    const bookingTitle = (
-      <FormattedMessage id="ListingPage.bookingTitle" values={{ title: richTitle }} />
-    );
-
     const topbar = <TopbarContainer />;
 
     if (showListingError && showListingError.status === 404) {
@@ -338,6 +334,13 @@ export class ListingPageComponent extends Component {
     const authorDisplayName = userDisplayNameAsString(ensuredAuthor, '');
 
     const { formattedPrice, priceTitle } = priceData(price, intl);
+
+    const bookingTitle = (
+      <FormattedMessage
+        id="ListingPage.bookingTitle"
+        values={{ title: richTitle, author: authorDisplayName }}
+      />
+    );
 
     const handleBookingSubmit = values => {
       const isCurrentlyClosed = currentListing.attributes.state === LISTING_STATE_CLOSED;
@@ -436,12 +439,12 @@ export class ListingPageComponent extends Component {
                     onContactUser={this.onContactUser}
                   />
                   <SectionDescriptionMaybe description={description} />
-                  {/* <SectionFeaturesMaybe options={yogaStylesOptions} publicData={publicData} />
                   <SectionMapMaybe
                     geolocation={geolocation}
                     publicData={publicData}
                     listingId={currentListing.id}
                   />
+                  {/* <SectionFeaturesMaybe options={yogaStylesOptions} publicData={publicData} />                 
                   <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} /> */}
                 </div>
                 <BookingPanel
