@@ -46,7 +46,7 @@ export const ACCOUNT_SETTINGS_PAGES = [
 const draftId = '00000000-0000-0000-0000-000000000000';
 const draftSlug = 'draft';
 
-const RedirectToLandingPage = () => <NamedRedirect name="LandingPage" />;
+const RedirectToLandingPage = () => <NamedRedirect name="ManageListingsPage" />;
 
 // NOTE: Most server-side endpoints are prefixed with /api. Requests to those
 // endpoints are indended to be handled in the server instead of the browser and
@@ -61,8 +61,8 @@ const routeConfiguration = () => {
     {
       path: '/',
       name: 'LandingPage',
-      component: LandingPage,
-    },
+      component: RedirectToLandingPage,
+    },   
     {
       path: '/about',
       name: 'AboutPage',

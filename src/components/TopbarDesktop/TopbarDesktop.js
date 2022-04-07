@@ -93,7 +93,7 @@ const TopbarDesktop = props => {
             <FormattedMessage id="TopbarDesktop.yourListingsLink" />
           </NamedLink>
         </MenuItem>
-        <MenuItem key="EditListingPage">
+        {/* <MenuItem key="EditListingPage">
           <OwnListingLink
             user={currentUser}
             listing={currentUserListing}
@@ -109,7 +109,7 @@ const TopbarDesktop = props => {
               )}
             </div>
           </OwnListingLink>
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem key="ProfileSettingsPage">
           <NamedLink
             className={classNames(css.profileSettingsLink, currentPageClass('ProfileSettingsPage'))}
@@ -218,14 +218,16 @@ const TopbarDesktop = props => {
           alt={intl.formatMessage({ id: 'TopbarDesktop.logo' })}
         />
       </NamedLink>
-      {search}
-      {manageListingLink}
-      {listingLink}
-      {createListingLink}
-      {inboxLink}
-      {profileMenu}
-      {signupLink}
-      {loginLink}
+      {/* {search} */}
+      {/* {manageListingLink} */}
+      {/* {listingLink} */}
+      {/* {createListingLink} */}
+      <div style={{ display: 'flex' }}>
+        {inboxLink}
+        {profileMenu}
+        {signupLink}
+        {loginLink}
+      </div>
     </nav>
   );
 };

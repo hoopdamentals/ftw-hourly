@@ -54,7 +54,7 @@ export class ManageListingsPageComponent extends Component {
     const listingsAreLoaded = !queryInProgress && hasPaginationInfo;
 
     const loadingResults = (
-      <h2>
+      <h2 className={css.title}>
         <FormattedMessage id="ManageListingsPage.loadingOwnListings" />
       </h2>
     );
