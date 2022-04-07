@@ -50,8 +50,6 @@
 }
 
 .loginForm {
-  margin-top: 24px;
-
   /* We don't want the form to take the whole space so that on mobile view
   the social login buttons will be after the sign up button
   and not in the bottom of the page.
@@ -62,14 +60,11 @@
 
   @media (--viewportMedium) {
     flex-basis: 330px;
-    margin-top: 30px;
     padding-top: 2px;
   }
 }
 
 .signupForm {
-  margin-top: 24px;
-
   /* We don't want the form to take the whole space so that on mobile view
   the social login buttons will be after the sign up button
   and not in the bottom of the page.
@@ -80,7 +75,6 @@
 
   @media (--viewportMedium) {
     flex-basis: 410px;
-    margin-top: 30px;
     padding-top: 2px;
   }
 }
@@ -204,9 +198,6 @@
 }
 
 .buttonIcon {
-  position: absolute;
-  left: 0;
-  margin-left: 20px;
 }
 
 .socialButtonWrapper {
@@ -239,6 +230,17 @@
   .socialButtonsOr {
     height: 34px;
     margin: 15px 0;
+  }
+}
+
+.idpButtons {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center;
+  @media (--viewportMedium) {
+    margin-top: 30px;
   }
 }
 

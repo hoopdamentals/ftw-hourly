@@ -293,39 +293,40 @@ export class AuthenticationPageComponent extends Component {
     );
 
     const socialLoginButtonsMaybe = showSocialLogins ? (
-      <div className={css.idpButtons}>
+      <div>
+        <div className={css.idpButtons}>
+          {showFacebookLogin ? (
+            <div className={css.socialButtonWrapper}>
+              <SocialLoginButton onClick={() => authWithFacebook()}>
+                <span className={css.buttonIcon}>{FacebookLogo}</span>
+                {/* {facebookButtonText} */}
+              </SocialLoginButton>
+            </div>
+          ) : null}
+
+          {showGoogleLogin ? (
+            <div className={css.socialButtonWrapper}>
+              <SocialLoginButton onClick={() => authWithGoogle()}>
+                <span className={css.buttonIcon}>{GoogleLogo}</span>
+                {/* {googleButtonText} */}
+              </SocialLoginButton>
+            </div>
+          ) : null}
+
+          {showLinkedInLogin ? (
+            <div className={css.socialButtonWrapper}>
+              <SocialLoginButton onClick={() => authWithLinkedin()}>
+                <span className={css.buttonIcon}>{LinkedInLogo}</span>
+                {/* {linkedinButtonText} */}
+              </SocialLoginButton>
+            </div>
+          ) : null}
+        </div>
         <div className={css.socialButtonsOr}>
           <span className={css.socialButtonsOrText}>
             <FormattedMessage id="AuthenticationPage.or" />
           </span>
         </div>
-
-        {showFacebookLogin ? (
-          <div className={css.socialButtonWrapper}>
-            <SocialLoginButton onClick={() => authWithFacebook()}>
-              <span className={css.buttonIcon}>{FacebookLogo}</span>
-              {facebookButtonText}
-            </SocialLoginButton>
-          </div>
-        ) : null}
-
-        {showGoogleLogin ? (
-          <div className={css.socialButtonWrapper}>
-            <SocialLoginButton onClick={() => authWithGoogle()}>
-              <span className={css.buttonIcon}>{GoogleLogo}</span>
-              {googleButtonText}
-            </SocialLoginButton>
-          </div>
-        ) : null}
-
-        {showLinkedInLogin ? (
-          <div className={css.socialButtonWrapper}>
-            <SocialLoginButton onClick={() => authWithLinkedin()}>
-              <span className={css.buttonIcon}>{LinkedInLogo}</span>
-              {linkedinButtonText}
-            </SocialLoginButton>
-          </div>
-        ) : null}
       </div>
     ) : null;
 
@@ -334,7 +335,7 @@ export class AuthenticationPageComponent extends Component {
       <div className={css.content}>
         <LinkTabNavHorizontal className={css.tabs} tabs={tabs} />
         {loginOrSignupError}
-
+        {socialLoginButtonsMaybe}
         {isLogin ? (
           <LoginForm className={css.loginForm} onSubmit={submitLogin} inProgress={authInProgress} />
         ) : (
@@ -345,8 +346,6 @@ export class AuthenticationPageComponent extends Component {
             onOpenTermsOfService={() => this.setState({ tosModalOpen: true })}
           />
         )}
-
-        {socialLoginButtonsMaybe}
       </div>
     );
 

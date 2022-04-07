@@ -16,6 +16,10 @@
 
 .bottomWrapper {
   @apply --marketplaceModalBottomWrapper;
+  margin-top: 40px;
+  @media (--viewportMedium) {
+    margin-top: 0px;
+  }
 }
 
 /* Adjust the bottomWrapper's margin to match modals without the helper text */
