@@ -10,6 +10,8 @@ import jstz from 'jstimezonedetect';
 export const START_DATE = 'startDate';
 export const END_DATE = 'endDate';
 
+export const SESSION_LENGTH = 1;
+
 /**
  * Check that the given parameter is a Date object.
  *
@@ -143,7 +145,7 @@ export const localizeAndFormatDate = (intl, timeZone, date, formattingOptions = 
     minute: '2-digit',
   };
 
-  return intl.formatTime(date, { ...format, timeZone });
+  return intl.formatTime(date, { ...format, timeZone, hourCycle: 'h12' });
 };
 
 /**
@@ -234,7 +236,7 @@ export const findNextBoundary = (timeZone, currentMomentOrDate) =>
   moment(currentMomentOrDate)
     .clone()
     .tz(timeZone)
-    .add(1, 'hour')
+    .add(SESSION_LENGTH, 'hour')
     .startOf('hour')
     .toDate();
 
@@ -350,6 +352,7 @@ export const getStartHours = (intl, timeZone, startTime, endTime) => {
  */
 export const getEndHours = (intl, timeZone, startTime, endTime) => {
   const hours = getSharpHours(intl, timeZone, startTime, endTime);
+  console.log(hours);
   return hours.length < 2 ? [] : hours.slice(1);
 };
 
@@ -373,7 +376,7 @@ export const timestampToDate = timestamp => {
  * @returns {Date} date in given timezone
  */
 export const timeOfDayFromLocalToTimeZone = (date, timeZone) => {
-  return moment.tz(moment(date).format('YYYY-MM-DD HH:mm:ss'), timeZone).toDate();
+  return moment.tz(moment(date).format('YYYY-MM-DD hh:mm:ss'), timeZone).toDate();
 };
 
 /**
@@ -389,7 +392,7 @@ export const timeOfDayFromTimeZoneToLocal = (date, timeZone) => {
   return moment(
     moment(date)
       .tz(timeZone)
-      .format('YYYY-MM-DD HH:mm:ss')
+      .format('YYYY-MM-DD hh:mm:ss')
   ).toDate();
 };
 
@@ -799,7 +802,8 @@ export const formatDateToText = (intl, date, timeZone) => {
  *
  */
 export const calculateQuantityFromHours = (startDate, endDate) => {
-  return moment(endDate).diff(moment(startDate), 'hours', true);
+  const hours = moment(endDate).diff(moment(startDate), 'hours', true);
+  return hours;
 };
 
 // Checks if time-range contains a day (moment)

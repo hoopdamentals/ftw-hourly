@@ -19,6 +19,20 @@ import css from './EditListingAvailabilityPlanForm.module.css';
 
 const printHourStrings = h => (h > 9 ? `${h}:00` : `0${h}:00`);
 
+// const printHourStrings = h => {
+//   let ending = 'AM';
+//   if (h > 12) {
+//     h = h - 12;
+//     ending = 'PM';
+//   } else if (h === 12) {
+//     ending = 'PM';
+//   } else if (h === 0) {
+//     h = 12;
+//     ending = 'AM';
+//   }
+//   return h > 9 ? `${h}:00 ${ending}` : `0${h}:00 ${ending}`;
+// };
+
 const HOURS = Array(24).fill();
 const ALL_START_HOURS = [...HOURS].map((v, i) => printHourStrings(i));
 const ALL_END_HOURS = [...HOURS].map((v, i) => printHourStrings(i + 1));
