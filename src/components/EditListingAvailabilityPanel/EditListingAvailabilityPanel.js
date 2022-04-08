@@ -54,9 +54,15 @@ const Weekday = props => {
         {availabilityPlan && hasEntry
           ? getEntries(availabilityPlan, dayOfWeek).map(e => {
               return (
-                <span className={css.entry} key={`${e.dayOfWeek}${e.startTime}`}>{`${
-                  e.startTime
-                } - ${e.endTime === '00:00' ? '24:00' : e.endTime}`}</span>
+                <span className={css.entry} key={`${e.dayOfWeek}${e.startTime}`}>
+                  {`${e.startTime} - ${e.endTime === '00:00' ? '24:00' : e.endTime}`}
+                  <span style={{ marginLeft: 20 }}>
+                    <FormattedMessage
+                      id={`EditListingAvailabilityPanel.seatLimit`}
+                      values={{ seatLimit: e.seats }}
+                    />
+                  </span>
+                </span>
               );
             })
           : null}
@@ -72,7 +78,7 @@ const Weekday = props => {
 // Create initial entry mapping for form's initial values
 const createEntryDayGroups = (entries = {}) =>
   entries.reduce((groupedEntries, entry) => {
-    const { startTime, endTime: endHour, dayOfWeek } = entry;
+    const { startTime, endTime: endHour, dayOfWeek, seats } = entry;
     const dayGroup = groupedEntries[dayOfWeek] || [];
     return {
       ...groupedEntries,
@@ -81,6 +87,7 @@ const createEntryDayGroups = (entries = {}) =>
         {
           startTime,
           endTime: endHour === '00:00' ? '24:00' : endHour,
+          seats,
         },
       ],
     };
@@ -101,12 +108,11 @@ const createEntriesFromSubmitValues = values =>
   WEEKDAYS.reduce((allEntries, dayOfWeek) => {
     const dayValues = values[dayOfWeek] || [];
     const dayEntries = dayValues.map(dayValue => {
-      const { startTime, endTime } = dayValue;
-      // Note: This template doesn't support seats yet.
-      return startTime && endTime
+      const { startTime, endTime, seats } = dayValue;
+      return startTime && endTime && seats
         ? {
             dayOfWeek,
-            seats: 1,
+            seats,
             startTime,
             endTime: endTime === '24:00' ? '00:00' : endTime,
           }

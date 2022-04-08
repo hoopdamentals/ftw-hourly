@@ -13,6 +13,7 @@ import {
   PrimaryButton,
   FieldSelect,
   FieldTimeZoneSelect,
+  FieldTextInput,
 } from '../../components';
 
 import css from './EditListingAvailabilityPlanForm.module.css';
@@ -104,6 +105,15 @@ const filterEndHours = (availableEndHours, values, dayOfWeek, index) => {
     : availableEndHours.filter(pickBetween(currentEntry.startTime, nextEntry.startTime));
 };
 
+const filterSeats = (values, dayOfWeek, index) => {
+  const entries = values[dayOfWeek];
+  const currentEntry = entries[index];
+
+  console.log(values);
+
+  return !!currentEntry.seats ? currentEntry.seats : 1;
+};
+
 const getEntryBoundaries = (values, dayOfWeek, intl, findStartHours) => index => {
   const entries = values[dayOfWeek];
   const boundaryDiff = findStartHours ? 0 : 1;
@@ -137,6 +147,14 @@ const DailyPlan = props => {
   });
   const endTimePlaceholder = intl.formatMessage({
     id: 'EditListingAvailabilityPlanForm.endTimePlaceholder',
+  });
+
+  const seatsPerUnitMessage = intl.formatMessage({
+    id: 'EditListingAvailabilityPlanForm.seatsPerUnit',
+  });
+
+  const seatsLabel = intl.formatMessage({
+    id: 'EditListingAvailabilityPlanForm.seatsLabel',
   });
 
   return (
@@ -196,6 +214,25 @@ const DailyPlan = props => {
                           ))}
                         </FieldSelect>
                       </div>
+                      <div
+                        className={css.field}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'flex-end',
+                          alignItems: 'flex-end',
+                        }}
+                      >
+                        <FieldTextInput
+                          className={css.seatsInput}
+                          type="number"
+                          id={`${name}.seats`}
+                          name={`${name}.seats`}
+                          value={filterSeats(values, dayOfWeek, index)}
+                          placeholder={seatsPerUnitMessage}
+                          min="1"
+                        />
+                        <span className={css.seatsLabel}>{seatsLabel}</span>
+                      </div>
                     </div>
                     <div
                       className={css.fieldArrayRemove}
@@ -212,7 +249,7 @@ const DailyPlan = props => {
                 <InlineTextButton
                   type="button"
                   className={css.buttonSetHours}
-                  onClick={() => fields.push({ startTime: null, endTime: null })}
+                  onClick={() => fields.push({ startTime: null, endTime: null, seats: 1 })}
                 >
                   <FormattedMessage id="EditListingAvailabilityPlanForm.setHours" />
                 </InlineTextButton>
@@ -220,7 +257,7 @@ const DailyPlan = props => {
                 <InlineTextButton
                   type="button"
                   className={css.buttonAddNew}
-                  onClick={() => fields.push({ startTime: null, endTime: null })}
+                  onClick={() => fields.push({ startTime: null, endTime: null, seats: 1 })}
                 >
                   <FormattedMessage id="EditListingAvailabilityPlanForm.addAnother" />
                 </InlineTextButton>
@@ -234,6 +271,7 @@ const DailyPlan = props => {
 };
 
 const submit = (onSubmit, weekdays) => values => {
+  console.log(weekdays);
   const sortedValues = weekdays.reduce(
     (submitValues, day) => {
       return submitValues[day]

@@ -54,6 +54,7 @@ const getAvailableStartTimes = (intl, timeZone, bookingStart, timeSlotsOnSelecte
   const allHours = timeSlotsOnSelectedDate.reduce((availableHours, t) => {
     const startDate = t.attributes.start;
     const endDate = t.attributes.end;
+
     const nextDate = resetToStartOfDay(bookingStartDate, timeZone, 1);
 
     // If the start date is after timeslot start, use the start date.
@@ -449,6 +450,21 @@ class FieldDateAndTimeInput extends Component {
 
     const startTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.startTime' });
     const endTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.endTime' });
+
+    const hasSeats =
+      !!selectedTimeSlot &&
+      !!selectedTimeSlot.attributes &&
+      !!selectedTimeSlot.attributes.seats &&
+      selectedTimeSlot.attributes.seats > 0;
+    const seatsLabel = hasSeats
+      ? intl.formatMessage(
+          {
+            id: 'FieldDateTimeInput.availableSeats',
+          },
+          { seats: selectedTimeSlot.attributes.seats }
+        )
+      : intl.formatMessage({ id: 'FieldDateTimeInput.noSeats' });
+
     /**
      * NOTE: In this template the field for the end date is hidden by default.
      * If you want to enable longer booking periods, showing the end date in the form requires some code changes:
@@ -521,7 +537,6 @@ class FieldDateAndTimeInput extends Component {
               showLabelAsDisabled={endDateDisabled}
             />
           </div>
-
           <div className={css.field}>
             <FieldSelect
               name="bookingStartTime"
@@ -543,9 +558,7 @@ class FieldDateAndTimeInput extends Component {
               )}
             </FieldSelect>
           </div>
-
           <div className={bookingStartDate ? css.lineBetween : css.lineBetweenDisabled}>-</div>
-
           <div className={css.field}>
             <FieldSelect
               name="bookingEndTime"
@@ -567,6 +580,7 @@ class FieldDateAndTimeInput extends Component {
             </FieldSelect>
           </div>
         </div>
+        {!!selectedTimeSlot && <div className={css.seatsLabel}>{seatsLabel}</div>}
       </div>
     );
   }

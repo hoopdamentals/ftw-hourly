@@ -352,7 +352,6 @@ export const getStartHours = (intl, timeZone, startTime, endTime) => {
  */
 export const getEndHours = (intl, timeZone, startTime, endTime) => {
   const hours = getSharpHours(intl, timeZone, startTime, endTime);
-  console.log(hours);
   return hours.length < 2 ? [] : hours.slice(1);
 };
 

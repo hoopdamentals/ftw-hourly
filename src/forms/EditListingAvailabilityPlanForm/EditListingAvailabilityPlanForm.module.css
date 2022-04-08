@@ -185,6 +185,18 @@
   }
 }
 
+.seatsInput {
+  @apply --marketplaceTabNavHorizontalFontStyles;
+  flex-shrink: 0;
+  width: 50px;
+  margin-left: 20px;
+}
+
+.seatsLabel {
+  @apply --marketplaceTabNavHorizontalFontStyles;
+  padding: 10px 0 10px 10px;
+}
+
 .fieldSelect {
   @apply --marketplaceTabNavHorizontalFontStyles;
   background: none;
