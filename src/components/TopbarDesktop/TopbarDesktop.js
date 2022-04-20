@@ -15,7 +15,6 @@ import {
   MenuItem,
   NamedLink,
   ListingLink,
-  OwnListingLink,
 } from '../../components';
 import { TopbarSearchForm } from '../../forms';
 
@@ -93,23 +92,6 @@ const TopbarDesktop = props => {
             <FormattedMessage id="TopbarDesktop.yourListingsLink" />
           </NamedLink>
         </MenuItem>
-        {/* <MenuItem key="EditListingPage">
-          <OwnListingLink
-            user={currentUser}
-            listing={currentUserListing}
-            listingFetched={currentUserListingFetched}
-            className={css.yourListingsLink}
-          >
-            <div>
-              <span className={css.menuItemBorder} />
-              {currentUserListing ? (
-                <FormattedMessage id="TopbarDesktop.editYourListingLink" />
-              ) : (
-                <FormattedMessage id="TopbarDesktop.addYourListingLink" />
-              )}
-            </div>
-          </OwnListingLink>
-        </MenuItem> */}
         <MenuItem key="ProfileSettingsPage">
           <NamedLink
             className={classNames(css.profileSettingsLink, currentPageClass('ProfileSettingsPage'))}

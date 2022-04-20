@@ -3,7 +3,6 @@ import { bool, string } from 'prop-types';
 import classNames from 'classnames';
 import { FormattedMessage } from '../../util/reactIntl';
 import { propTypes } from '../../util/types';
-import { OwnListingLink } from '../../components';
 
 import css from './SectionHowItWorks.module.css';
 
@@ -52,15 +51,6 @@ const SectionHowItWorks = props => {
             <FormattedMessage id="SectionHowItWorks.part3Text" />
           </p>
         </div>
-      </div>
-      <div className={css.createListingLink}>
-        <OwnListingLink
-          user={currentUser}
-          listing={currentUserListing}
-          listingFetched={currentUserListingFetched}
-        >
-          <FormattedMessage id="SectionHowItWorks.createListingLink" />
-        </OwnListingLink>
       </div>
     </div>
   );
