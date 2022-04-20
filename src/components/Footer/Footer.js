@@ -106,9 +106,6 @@ const Footer = props => {
             </div>
           </div>
           <div className={css.copyrightAndTermsMobile}>
-            <NamedLink name="LandingPage" className={css.organizationCopyrightMobile}>
-              <FormattedMessage id="Footer.copyright" />
-            </NamedLink>
             <div className={css.tosAndPrivacyMobile}>
               <NamedLink name="PrivacyPolicyPage" className={css.privacy}>
                 <FormattedMessage id="Footer.privacy" />

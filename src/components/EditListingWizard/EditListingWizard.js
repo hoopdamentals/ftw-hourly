@@ -26,6 +26,7 @@ import EditListingWizardTab, {
   LOCATION,
   PRICING,
   PHOTOS,
+  SESSION_LENGTH,
 } from './EditListingWizardTab';
 import css from './EditListingWizard.module.css';
 
@@ -44,6 +45,7 @@ export const TABS = [
   //POLICY,
   LOCATION,
   PRICING,
+  SESSION_LENGTH,
   ...availabilityMaybe,
   PHOTOS,
 ];
@@ -66,6 +68,8 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelLocation';
   } else if (tab === PRICING) {
     key = 'EditListingWizard.tabLabelPricing';
+  } else if (tab === SESSION_LENGTH) {
+    key = 'EditListingWizard.tabLabelSessionLength';
   } else if (tab === AVAILABILITY) {
     key = 'EditListingWizard.tabLabelAvailability';
   } else if (tab === PHOTOS) {
@@ -105,6 +109,8 @@ const tabCompleted = (tab, listing) => {
       return !!(geolocation && publicData && publicData.location && publicData.location.address);
     case PRICING:
       return !!price;
+    case SESSION_LENGTH:
+      return !!(publicData && publicData.sessionLength);
     case AVAILABILITY:
       return !!availabilityPlan;
     case PHOTOS:

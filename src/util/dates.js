@@ -10,8 +10,6 @@ import jstz from 'jstimezonedetect';
 export const START_DATE = 'startDate';
 export const END_DATE = 'endDate';
 
-export const SESSION_LENGTH = 1;
-
 /**
  * Check that the given parameter is a Date object.
  *
@@ -232,11 +230,11 @@ const findBookingUnitBoundaries = params => {
  *
  * @returns {Array} an array of localized hours.
  */
-export const findNextBoundary = (timeZone, currentMomentOrDate) =>
+export const findNextBoundary = (timeZone, currentMomentOrDate, sessionLength = 1) =>
   moment(currentMomentOrDate)
     .clone()
     .tz(timeZone)
-    .add(SESSION_LENGTH, 'hour')
+    .add(sessionLength, 'hour')
     .startOf('hour')
     .toDate();
 

@@ -109,14 +109,12 @@ const filterSeats = (values, dayOfWeek, index) => {
   const entries = values[dayOfWeek];
   const currentEntry = entries[index];
 
-  console.log(values);
-
   return !!currentEntry.seats ? currentEntry.seats : 1;
 };
 
-const getEntryBoundaries = (values, dayOfWeek, intl, findStartHours) => index => {
+const getEntryBoundaries = (values, dayOfWeek, intl, sessionLength, findStartHours) => index => {
   const entries = values[dayOfWeek];
-  const boundaryDiff = findStartHours ? 0 : 1;
+  const boundaryDiff = findStartHours ? 0 : sessionLength;
 
   return entries.reduce((allHours, entry, i) => {
     const { startTime, endTime } = entry || {};
@@ -126,7 +124,11 @@ const getEntryBoundaries = (values, dayOfWeek, intl, findStartHours) => index =>
       const endHour = Number.parseInt(endTime.split(':')[0]);
       const hoursBetween = Array(endHour - startHour)
         .fill()
-        .map((v, i) => printHourStrings(startHour + i + boundaryDiff));
+        .map((v, i) => {
+          const hourString = startHour + i + boundaryDiff;
+          console.log(hourString);
+          printHourStrings(hourString);
+        });
 
       return allHours.concat(hoursBetween);
     }
@@ -136,9 +138,9 @@ const getEntryBoundaries = (values, dayOfWeek, intl, findStartHours) => index =>
 };
 
 const DailyPlan = props => {
-  const { dayOfWeek, values, intl } = props;
-  const getEntryStartTimes = getEntryBoundaries(values, dayOfWeek, intl, true);
-  const getEntryEndTimes = getEntryBoundaries(values, dayOfWeek, intl, false);
+  const { dayOfWeek, sessionLength, values, intl } = props;
+  const getEntryStartTimes = getEntryBoundaries(values, dayOfWeek, intl, sessionLength, true);
+  const getEntryEndTimes = getEntryBoundaries(values, dayOfWeek, intl, sessionLength, false);
 
   const hasEntries = values[dayOfWeek] && values[dayOfWeek][0];
 
@@ -306,6 +308,7 @@ const EditListingAvailabilityPlanFormComponent = props => {
           intl,
           listingTitle,
           weekdays,
+          sessionLength,
           fetchErrors,
           values,
         } = fieldRenderProps;
@@ -342,7 +345,15 @@ const EditListingAvailabilityPlanFormComponent = props => {
             </h3>
             <div className={css.week}>
               {weekdays.map(w => {
-                return <DailyPlan dayOfWeek={w} key={w} values={values} intl={intl} />;
+                return (
+                  <DailyPlan
+                    dayOfWeek={w}
+                    key={w}
+                    sessionLength={sessionLength}
+                    values={values}
+                    intl={intl}
+                  />
+                );
               })}
             </div>
 

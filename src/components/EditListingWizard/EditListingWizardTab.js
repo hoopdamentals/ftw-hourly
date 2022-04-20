@@ -18,6 +18,7 @@ import {
   EditListingPhotosPanel,
   EditListingPoliciesPanel,
   EditListingPricingPanel,
+  EditListingSessionLengthPanel,
 } from '../../components';
 
 import css from './EditListingWizard.module.css';
@@ -28,6 +29,7 @@ export const FEATURES = 'features';
 export const POLICY = 'policy';
 export const LOCATION = 'location';
 export const PRICING = 'pricing';
+export const SESSION_LENGTH = 'session_length';
 export const PHOTOS = 'photos';
 
 // EditListingWizardTab component supports these tabs
@@ -37,6 +39,7 @@ export const SUPPORTED_TABS = [
   POLICY,
   LOCATION,
   PRICING,
+  SESSION_LENGTH,
   AVAILABILITY,
   PHOTOS,
 ];
@@ -58,6 +61,9 @@ const redirectAfterDraftUpdate = (listingId, params, tab, marketplaceTabs, histo
     id: listingId,
   };
   const routes = routeConfiguration();
+  console.log('redirectAfterDraftUpdate');
+
+  console.log(currentPathParams);
 
   // Replace current "new" path to "draft" path.
   // Browser's back button should lead to editing current draft instead of creating a new one.
@@ -68,7 +74,9 @@ const redirectAfterDraftUpdate = (listingId, params, tab, marketplaceTabs, histo
 
   // Redirect to next tab
   const nextPathParams = pathParamsToNextTab(currentPathParams, tab, marketplaceTabs);
+  console.log(nextPathParams);
   const to = createResourceLocatorString('EditListingPage', routes, nextPathParams, {});
+  console.log(to);
   history.push(to);
 };
 
@@ -129,17 +137,22 @@ const EditListingWizardTab = props => {
 
       return onUpsertListingDraft(tab, upsertValues)
         .then(r => {
+          console.log(tab);
+          console.log(marketplaceTabs);
           if (tab !== AVAILABILITY && tab !== marketplaceTabs[marketplaceTabs.length - 1]) {
             // Create listing flow: smooth scrolling polyfill to scroll to correct tab
             handleCreateFlowTabScrolling(false);
 
             // After successful saving of draft data, user should be redirected to next tab
             redirectAfterDraftUpdate(r.data.data.id.uuid, params, tab, marketplaceTabs, history);
+            console.log('redirectAfterDraftUpdate');
           } else if (tab === marketplaceTabs[marketplaceTabs.length - 1]) {
             handlePublishListing(currentListing.id);
+            console.log('handlePublishListing');
           }
         })
         .catch(e => {
+          console.log(e);
           if (passThrownErrors) {
             throw e;
           }
@@ -230,6 +243,20 @@ const EditListingWizardTab = props => {
       return (
         <EditListingPricingPanel
           {...panelProps(PRICING)}
+          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          onSubmit={values => {
+            onCompleteEditListingWizardTab(tab, values);
+          }}
+        />
+      );
+    }
+    case SESSION_LENGTH: {
+      const submitButtonTranslationKey = isNewListingFlow
+        ? 'EditListingWizard.saveNewSessionLength'
+        : 'EditListingWizard.saveEditSessionLength';
+      return (
+        <EditListingSessionLengthPanel
+          {...panelProps(SESSION_LENGTH)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);

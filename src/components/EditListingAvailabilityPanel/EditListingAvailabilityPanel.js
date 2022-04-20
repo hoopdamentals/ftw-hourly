@@ -167,6 +167,9 @@ const EditListingAvailabilityPanel = props => {
 
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
+  const { publicData } = currentListing.attributes;
+  const { sessionLength } = publicData;
+
   const isNextButtonDisabled = !currentListing.attributes.availabilityPlan;
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
   const defaultAvailabilityPlan = {
@@ -370,6 +373,7 @@ const EditListingAvailabilityPanel = props => {
             formId="EditListingAvailabilityPlanForm"
             listingTitle={currentListing.attributes.title}
             availabilityPlan={availabilityPlan}
+            sessionLength={sessionLength}
             weekdays={WEEKDAYS}
             onSubmit={handleSubmit}
             initialValues={initialValues}
