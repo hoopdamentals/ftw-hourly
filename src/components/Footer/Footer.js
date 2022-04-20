@@ -64,30 +64,8 @@ const Footer = props => {
         <div className={css.content}>
           <div className={css.someLiksMobile}>{socialMediaLinks}</div>
           <div className={css.links}>
-            <div className={css.organization} id="organization">
-              <NamedLink name="LandingPage" className={css.logoLink}>
-                <span className={css.logo}>
-                  <Logo format="desktop" />
-                </span>
-              </NamedLink>
-              <div className={css.organizationInfo}>
-                <p className={css.organizationDescription}>
-                  <FormattedMessage id="Footer.organizationDescription" />
-                </p>
-                <p className={css.organizationCopyright}>
-                  <NamedLink name="LandingPage" className={css.copyrightLink}>
-                    <FormattedMessage id="Footer.copyright" />
-                  </NamedLink>
-                </p>
-              </div>
-            </div>
             <div className={css.infoLinks}>
               <ul className={css.list}>
-                <li className={css.listItem}>
-                  <NamedLink name="NewListingPage" className={css.link}>
-                    <FormattedMessage id="Footer.toNewListingPage" />
-                  </NamedLink>
-                </li>
                 <li className={css.listItem}>
                   <NamedLink name="AboutPage" className={css.link}>
                     <FormattedMessage id="Footer.toAboutPage" />
@@ -110,24 +88,7 @@ const Footer = props => {
                 </li>
               </ul>
             </div>
-            <div className={css.searches}>
-              <ul className={css.list}>
-                <li className={css.listItem}>
-                  <NamedLink
-                    name="SearchPage"
-                    to={{
-                      search:
-                        '?address=Seattle%2C%20Washington%2C%20USA&bounds=47.7779392908564%2C-122.216605992108%2C47.3403950185547%2C-122.441233019046',
-                    }}
-                    className={css.link}
-                  >
-                    <FormattedMessage id="Footer.searchNashville" />
-                  </NamedLink>
-                </li>
-              </ul>
-            </div>
             <div className={css.extraLinks}>
-              <div className={css.someLinks}>{socialMediaLinks}</div>
               <div className={css.legalMatters}>
                 <ul className={css.tosAndPrivacy}>
                   <li>
