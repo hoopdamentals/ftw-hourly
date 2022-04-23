@@ -59,7 +59,7 @@ describe('calculateTotalPriceFromSeats()', () => {
 describe('calculateLineTotal()', () => {
   it('should calculate lineTotal for lineItem with quantity', () => {
     const lineItem = {
-      code: 'line-item/cleaning-fee',
+      code: 'line-item/transaction-fee',
       unitPrice: new Money(1000, 'EUR'),
       quantity: 3,
       includeFor: ['customer', 'provider'],
@@ -112,7 +112,7 @@ describe('calculateTotalFromLineItems()', () => {
       },
 
       {
-        code: 'line-item/cleaning-fee',
+        code: 'line-item/transaction-fee',
         unitPrice: new Money(5000, 'USD'),
         quantity: 1,
         includeFor: ['customer', 'provider'],
@@ -133,7 +133,7 @@ describe('calculateTotalForProvider()', () => {
         includeFor: ['customer', 'provider'],
       },
       {
-        code: 'line-item/cleaning-fee',
+        code: 'line-item/transaction-fee',
         unitPrice: new Money(7500, 'USD'),
         quantity: 1,
         lineTotal: new Money(7500, 'USD'),
@@ -174,7 +174,7 @@ describe('calculateTotalForCustomer()', () => {
         includeFor: ['customer', 'provider'],
       },
       {
-        code: 'line-item/cleaning-fee',
+        code: 'line-item/transaction-fee',
         unitPrice: new Money(7500, 'USD'),
         quantity: 1,
         lineTotal: new Money(7500, 'USD'),

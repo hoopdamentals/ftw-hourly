@@ -10,7 +10,7 @@ const PROVIDER_COMMISSION_PERCENTAGE = -10;
 /** Returns collection of lineItems (max 50)
  *
  * Each line items has following fields:
- * - `code`: string, mandatory, indentifies line item type (e.g. \"line-item/cleaning-fee\"), maximum length 64 characters.
+ * - `code`: string, mandatory, indentifies line item type (e.g. \"line-item/transaction-fee\"), maximum length 64 characters.
  * - `unitPrice`: money, mandatory
  * - `lineTotal`: money
  * - `quantity`: number
@@ -47,14 +47,41 @@ exports.transactionLineItems = (listing, bookingData) => {
     includeFor: ['customer', 'provider'],
   };
 
-  const providerCommission = {
-    code: 'line-item/provider-commission',
-    unitPrice: calculateTotalFromLineItems([booking]),
-    percentage: PROVIDER_COMMISSION_PERCENTAGE,
-    includeFor: ['provider'],
-  };
+  const transactionFeePrice = resolvetransactionFeePrice(listing);
+  const transactionFee = transactionFeePrice
+    ? [
+        {
+          code: 'line-item/transaction-fee',
+          unitPrice: transactionFeePrice,
+          quantity: 1,
+          includeFor: ['customer'],
+        },
+      ]
+    : [];
 
-  const lineItems = [booking, providerCommission];
+  // const providerCommission = {
+  //   code: 'line-item/provider-commission',
+  //   unitPrice: calculateTotalFromLineItems([booking, ...transactionFee]),
+  //   percentage: PROVIDER_COMMISSION_PERCENTAGE,
+  //   includeFor: ['provider'],
+  // };
+
+  // const lineItems = [booking, ...transactionFee, providerCommission];
+  const lineItems = [booking, ...transactionFee];
 
   return lineItems;
+};
+
+const resolvetransactionFeePrice = listing => {
+  const publicData = listing.attributes.publicData;
+  console.log(publicData);
+  const transactionFee = publicData && publicData.transactionFee;
+  console.log(transactionFee);
+  const { amount, currency } = transactionFee;
+
+  if (amount && currency) {
+    return new Money(amount, currency);
+  }
+
+  return null;
 };
