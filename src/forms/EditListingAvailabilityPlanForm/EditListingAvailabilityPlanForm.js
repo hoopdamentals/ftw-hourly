@@ -5,6 +5,7 @@ import { Form as FinalForm } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import classNames from 'classnames';
+import moment from 'moment';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import {
   Form,
@@ -18,25 +19,36 @@ import {
 
 import css from './EditListingAvailabilityPlanForm.module.css';
 
-const printHourStrings = h => (h > 9 ? `${h}:00` : `0${h}:00`);
+// const printHourStrings = h => (h > 9 ? `${h}:00` : `0${h}:00`);
+// const HOURS = Array(24).fill();
+// const ALL_START_HOURS = [...HOURS].map((v, i) => printHourStrings(i));
+// const ALL_END_HOURS = [...HOURS].map((v, i) => printHourStrings(i + 1));
 
-// const printHourStrings = h => {
-//   let ending = 'AM';
-//   if (h > 12) {
-//     h = h - 12;
-//     ending = 'PM';
-//   } else if (h === 12) {
-//     ending = 'PM';
-//   } else if (h === 0) {
-//     h = 12;
-//     ending = 'AM';
-//   }
-//   return h > 9 ? `${h}:00 ${ending}` : `0${h}:00 ${ending}`;
-// };
+const HOURS = [
+  ...Array.from(
+    {
+      length: 48,
+    },
+    (_, hour) =>
+      moment({
+        hour: Math.floor(hour / 2),
+        minutes: hour % 2 === 0 ? 0 : 30,
+      }).format('h:mm A')
+  ),
+  '12:00 AM',
+];
 
-const HOURS = Array(24).fill();
-const ALL_START_HOURS = [...HOURS].map((v, i) => printHourStrings(i));
-const ALL_END_HOURS = [...HOURS].map((v, i) => printHourStrings(i + 1));
+console.log(HOURS);
+
+const printHourStrings = h => HOURS[h];
+
+const ALL_START_HOURS = [...HOURS].filter((v, i) => i != HOURS.length - 1);
+
+const ALL_END_HOURS = [...HOURS].filter((v, i) => i != 0);
+
+// const HOURS = Array(24).fill();
+// const ALL_START_HOURS = [...HOURS].map((v, i) => printHourStrings(i));
+// const ALL_END_HOURS = [...HOURS].map((v, i) => printHourStrings(i + 1));
 
 const sortEntries = (defaultCompareReturn = 0) => (a, b) => {
   if (a.startTime && b.startTime) {
@@ -69,8 +81,24 @@ const filterStartHours = (availableStartHours, values, dayOfWeek, index) => {
   // return all the available times before current selected end time.
   // Otherwise return all the available start times that are after the previous entry or entries.
   const prevEntry = sortedEntries[currentIndex - 1];
-  const pickBefore = time => h => h < time;
-  const pickBetween = (start, end) => h => h >= start && h < end;
+  const pickBefore = time => h => {
+    const momentHour = moment(h, 'h:mm a');
+    const momentTime = moment(time, 'h:mm a');
+    const newResult = momentHour.isBefore(momentTime);
+    // console.log(`new pickBefore ${momentHour} < ${momentTime} ${newResult}`);
+    return newResult;
+  };
+
+  const pickBetween = (start, end) => h => {
+    const momentHour = moment(h, 'h:mm a');
+    const momentStart = moment(start, 'h:mm a');
+    const momentEnd = moment(end, 'h:mm a');
+    const newResult = momentHour.isSameOrAfter(momentStart) && momentHour.isBefore(momentEnd);
+    // console.log(
+    //   `new pickBetween ${momentHour} >= ${momentStart} ${momentHour} < ${momentEnd} ${newResult}`
+    // );
+    return newResult;
+  };
 
   return !prevEntry || !prevEntry.endTime
     ? availableStartHours.filter(pickBefore(currentEntry.endTime))
@@ -78,6 +106,7 @@ const filterStartHours = (availableStartHours, values, dayOfWeek, index) => {
 };
 
 const filterEndHours = (availableEndHours, values, dayOfWeek, index) => {
+  // debugger;
   const entries = values[dayOfWeek];
   const currentEntry = entries[index];
 
@@ -97,8 +126,23 @@ const filterEndHours = (availableEndHours, values, dayOfWeek, index) => {
   // return all the available end times that are after the start of current entry.
   // Otherwise return all the available end hours between current start time and next entry.
   const nextEntry = sortedEntries[currentIndex + 1];
-  const pickAfter = time => h => h > time;
-  const pickBetween = (start, end) => h => h > start && h <= end;
+  const pickAfter = time => h => {
+    const momentHour = moment(h, 'h:mm a');
+    const momentTime = moment(time, 'h:mm a');
+    const newResult = momentHour.isAfter(momentTime);
+    // console.log(`new pickAfter ${momentHour} > ${momentTime} ${newResult}`);
+    return newResult;
+  };
+  const pickBetween = (start, end) => h => {
+    const momentHour = moment(h, 'h:mm a');
+    const momentStart = moment(start, 'h:mm a');
+    const momentEnd = moment(end, 'h:mm a');
+    const newResult = momentHour.isAfter(momentStart) && momentHour.isSameOrBefore(momentEnd);
+    // console.log(
+    //   `new pickBetween ${momentHour} > ${momentStart} ${momentHour} <= ${momentEnd} ${newResult}`
+    // );
+    return newResult;
+  };
 
   return !nextEntry || !nextEntry.startTime
     ? availableEndHours.filter(pickAfter(currentEntry.startTime))
@@ -114,19 +158,22 @@ const filterSeats = (values, dayOfWeek, index) => {
 
 const getEntryBoundaries = (values, dayOfWeek, intl, sessionLength, findStartHours) => index => {
   const entries = values[dayOfWeek];
-  const boundaryDiff = findStartHours ? 0 : sessionLength;
+  const boundaryDiff = findStartHours ? 0 : 1;
 
   return entries.reduce((allHours, entry, i) => {
     const { startTime, endTime } = entry || {};
 
     if (i !== index && startTime && endTime) {
-      const startHour = Number.parseInt(startTime.split(':')[0]);
-      const endHour = Number.parseInt(endTime.split(':')[0]);
+      // const startHour = Number.parseInt(startTime.split(':')[0]);
+      // const endHour = Number.parseInt(endTime.split(':')[0]);
+
+      const startHour = HOURS.indexOf(startTime);
+      const endHour = HOURS.indexOf(endTime);
+      // console.log(` startHour ${startHour} - endHour ${endHour}`);
       const hoursBetween = Array(endHour - startHour)
         .fill()
         .map((v, i) => {
           const hourString = startHour + i + boundaryDiff;
-          console.log(hourString);
           printHourStrings(hourString);
         });
 
@@ -178,6 +225,14 @@ const DailyPlan = props => {
                 const pickUnreservedEndHours = h => !getEntryEndTimes(index).includes(h);
                 const availableEndHours = ALL_END_HOURS.filter(pickUnreservedEndHours);
 
+                // debugger;
+                const filteredEndHours = filterEndHours(
+                  availableEndHours,
+                  values,
+                  dayOfWeek,
+                  index
+                );
+
                 return (
                   <div className={css.fieldWrapper} key={name}>
                     <div className={css.formRow}>
@@ -209,7 +264,7 @@ const DailyPlan = props => {
                           <option disabled value="">
                             {endTimePlaceholder}
                           </option>
-                          {filterEndHours(availableEndHours, values, dayOfWeek, index).map(s => (
+                          {filteredEndHours.map(s => (
                             <option value={s} key={s}>
                               {s}
                             </option>
