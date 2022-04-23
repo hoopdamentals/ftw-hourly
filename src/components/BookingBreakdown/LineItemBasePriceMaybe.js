@@ -29,9 +29,11 @@ const LineItemBasePriceMaybe = props => {
   return quantity && total ? (
     <div className={css.lineItem}>
       <span className={css.itemLabel}>
+        <FormattedMessage id={'BookingBreakdown.baseUnitLabel'} />
+      </span>
+      <span className={css.itemValue}>
         <FormattedMessage id={translationKey} values={{ unitPrice, quantity }} />
       </span>
-      <span className={css.itemValue}>{total}</span>
     </div>
   ) : null;
 };
