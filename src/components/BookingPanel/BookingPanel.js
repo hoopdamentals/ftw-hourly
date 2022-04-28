@@ -74,6 +74,8 @@ const BookingPanel = props => {
   } = props;
 
   const price = listing.attributes.price;
+  const publicData = listing.attributes.publicData;
+  const { sessionLength } = publicData;
   const timeZone =
     listing.attributes.availabilityPlan && listing.attributes.availabilityPlan.timezone;
   const hasListingState = !!listing.attributes.state;
@@ -127,6 +129,14 @@ const BookingPanel = props => {
             <h2 className={titleClasses}>{title}</h2>
             {subTitleText ? <div className={css.bookingHelp}>{subTitleText}</div> : null}
           </div>
+          <div className={css.desktopPriceContainer}>
+            <div className={css.desktopPriceValue} title={priceTitle}>
+              {sessionLength}
+            </div>
+            <div className={css.desktopPerUnit}>
+              <FormattedMessage id={'BookingPanel.unitSize'} />
+            </div>
+          </div>
         </div>
 
         {showBookingTimeForm ? (
@@ -137,6 +147,7 @@ const BookingPanel = props => {
             unitType={unitType}
             onSubmit={onSubmit}
             price={price}
+            sessionLength={Number(sessionLength)}
             listingId={listing.id}
             isOwnListing={isOwnListing}
             monthlyTimeSlots={monthlyTimeSlots}

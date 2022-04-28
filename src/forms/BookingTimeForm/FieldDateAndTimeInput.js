@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { func, object, string } from 'prop-types';
+import { func, object, string, number } from 'prop-types';
 import classNames from 'classnames';
 import config from '../../config';
 import { intlShape } from '../../util/reactIntl';
@@ -45,7 +45,13 @@ const endOfRange = (date, timeZone) => {
   return resetToStartOfDay(date, timeZone, MAX_TIME_SLOTS_RANGE - 1);
 };
 
-const getAvailableStartTimes = (intl, timeZone, bookingStart, timeSlotsOnSelectedDate) => {
+const getAvailableStartTimes = (
+  intl,
+  timeZone,
+  bookingStart,
+  timeSlotsOnSelectedDate,
+  sessionLength
+) => {
   if (timeSlotsOnSelectedDate.length === 0 || !timeSlotsOnSelectedDate[0] || !bookingStart) {
     return [];
   }
@@ -65,7 +71,7 @@ const getAvailableStartTimes = (intl, timeZone, bookingStart, timeSlotsOnSelecte
     // Otherwise use the end of the timeslot.
     const endLimit = dateIsAfter(endDate, nextDate) ? nextDate : endDate;
 
-    const hours = getStartHours(intl, timeZone, startLimit, endLimit);
+    const hours = getStartHours(intl, timeZone, startLimit, endLimit, sessionLength);
     return availableHours.concat(hours);
   }, []);
   return allHours;
@@ -76,7 +82,8 @@ const getAvailableEndTimes = (
   timeZone,
   bookingStartTime,
   bookingEndDate,
-  selectedTimeSlot
+  selectedTimeSlot,
+  sessionLength
 ) => {
   if (!selectedTimeSlot || !selectedTimeSlot.attributes || !bookingEndDate || !bookingStartTime) {
     return [];
@@ -109,7 +116,7 @@ const getAvailableEndTimes = (
       : dayAfterBookingEnd;
   }
 
-  return getEndHours(intl, timeZone, startLimit, endLimit);
+  return getEndHours(intl, timeZone, startLimit, endLimit, sessionLength);
 };
 
 const getTimeSlots = (timeSlots, date, timeZone) => {
@@ -123,6 +130,7 @@ const getTimeSlots = (timeSlots, date, timeZone) => {
 const getAllTimeValues = (
   intl,
   timeZone,
+  sessionLength,
   timeSlots,
   startDate,
   selectedStartTime,
@@ -134,7 +142,8 @@ const getAllTimeValues = (
         intl,
         timeZone,
         startDate,
-        getTimeSlots(timeSlots, startDate, timeZone)
+        getTimeSlots(timeSlots, startDate, timeZone),
+        sessionLength
       );
 
   // Value selectedStartTime is a string when user has selected it through the form.
@@ -153,17 +162,25 @@ const getAllTimeValues = (
   // date would be the next day at 00:00 the day in the form is still correct.
   // Because we are only using the date and not the exact time we can remove the
   // 1ms.
+  // debugger;
   const endDate = selectedEndDate
     ? selectedEndDate
     : startTimeAsDate
-    ? new Date(findNextBoundary(timeZone, startTimeAsDate).getTime() - 1)
+    ? new Date(findNextBoundary(timeZone, startTimeAsDate, sessionLength).getTime() - 1)
     : null;
 
   const selectedTimeSlot = timeSlots.find(t =>
     isInRange(startTimeAsDate, t.attributes.start, t.attributes.end)
   );
 
-  const endTimes = getAvailableEndTimes(intl, timeZone, startTime, endDate, selectedTimeSlot);
+  const endTimes = getAvailableEndTimes(
+    intl,
+    timeZone,
+    startTime,
+    endDate,
+    selectedTimeSlot,
+    sessionLength
+  );
 
   // We need to convert the timestamp we use as a default value
   // for endTime to string for consistency. This is expected later when we
@@ -266,7 +283,7 @@ class FieldDateAndTimeInput extends Component {
   }
 
   onBookingStartDateChange = value => {
-    const { monthlyTimeSlots, timeZone, intl, form } = this.props;
+    const { monthlyTimeSlots, timeZone, intl, form, sessionLength } = this.props;
     if (!value || !value.date) {
       form.batch(() => {
         form.change('bookingStartTime', null);
@@ -288,6 +305,7 @@ class FieldDateAndTimeInput extends Component {
     const { startTime, endDate, endTime } = getAllTimeValues(
       intl,
       timeZone,
+      sessionLength,
       timeSlotsOnSelectedDate,
       startDate
     );
@@ -300,7 +318,8 @@ class FieldDateAndTimeInput extends Component {
   };
 
   onBookingStartTimeChange = value => {
-    const { monthlyTimeSlots, timeZone, intl, form, values } = this.props;
+    const { monthlyTimeSlots, timeZone, intl, form, values, sessionLength } = this.props;
+
     const timeSlots = getMonthlyTimeSlots(monthlyTimeSlots, this.state.currentMonth, timeZone);
     const startDate = values.bookingStartDate.date;
     const timeSlotsOnSelectedDate = getTimeSlots(timeSlots, startDate, timeZone);
@@ -308,6 +327,7 @@ class FieldDateAndTimeInput extends Component {
     const { endDate, endTime } = getAllTimeValues(
       intl,
       timeZone,
+      sessionLength,
       timeSlotsOnSelectedDate,
       startDate,
       value
@@ -320,7 +340,7 @@ class FieldDateAndTimeInput extends Component {
   };
 
   onBookingEndDateChange = value => {
-    const { monthlyTimeSlots, timeZone, intl, form, values } = this.props;
+    const { monthlyTimeSlots, timeZone, intl, form, values, sessionLength } = this.props;
     if (!value || !value.date) {
       form.change('bookingEndTime', null);
       return;
@@ -338,6 +358,7 @@ class FieldDateAndTimeInput extends Component {
     const { endTime } = getAllTimeValues(
       intl,
       timeZone,
+      sessionLength,
       timeSlotsOnSelectedDate,
       startDate,
       bookingStartTime,
@@ -373,6 +394,7 @@ class FieldDateAndTimeInput extends Component {
       startDateInputProps,
       endDateInputProps,
       values,
+      sessionLength,
       monthlyTimeSlots,
       timeZone,
       intl,
@@ -405,17 +427,28 @@ class FieldDateAndTimeInput extends Component {
       intl,
       timeZone,
       bookingStartDate,
-      timeSlotsOnSelectedDate
+      timeSlotsOnSelectedDate,
+      sessionLength
     );
 
-    const firstAvailableStartTime =
+    let firstAvailableStartTime =
       availableStartTimes.length > 0 && availableStartTimes[0] && availableStartTimes[0].timestamp
         ? availableStartTimes[0].timestamp
         : null;
 
+    // if (firstAvailableStartTime) {
+    //   firstAvailableStartTime = firstAvailableStartTime - 60 * 60 * 1000 * sessionLength;
+    // }
+
+    // console.log('firstAvailableStartTime');
+    // console.log(firstAvailableStartTime);
+    console.log('availableStartTimes');
+    console.log(availableStartTimes);
+
     const { startTime, endDate, selectedTimeSlot } = getAllTimeValues(
       intl,
       timeZone,
+      sessionLength,
       timeSlotsOnSelectedDate,
       bookingStartDate,
       bookingStartTime || firstAvailableStartTime,
@@ -427,7 +460,8 @@ class FieldDateAndTimeInput extends Component {
       timeZone,
       bookingStartTime || startTime,
       bookingEndDate || endDate,
-      selectedTimeSlot
+      selectedTimeSlot,
+      sessionLength
     );
 
     const isDayBlocked = timeSlotsOnSelectedMonth
@@ -442,10 +476,12 @@ class FieldDateAndTimeInput extends Component {
           )
       : () => false;
 
+    // debugger;
+
     const placeholderTime = localizeAndFormatTime(
       intl,
       timeZone,
-      findNextBoundary(timeZone, TODAY)
+      findNextBoundary(timeZone, TODAY, sessionLength)
     );
 
     const startTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.startTime' });
@@ -594,6 +630,7 @@ FieldDateAndTimeInput.defaultProps = {
   startTimeInputProps: null,
   endTimeInputProps: null,
   listingId: null,
+  sessionLength: 1,
   monthlyTimeSlots: null,
   timeZone: null,
 };
@@ -610,6 +647,7 @@ FieldDateAndTimeInput.propTypes = {
   form: object.isRequired,
   values: object.isRequired,
   listingId: propTypes.uuid,
+  sessionLength: number,
   monthlyTimeSlots: object,
   onFetchTimeSlots: func.isRequired,
   timeZone: string,

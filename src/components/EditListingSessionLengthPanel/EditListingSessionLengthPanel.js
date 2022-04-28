@@ -47,7 +47,7 @@ const EditListingSessionLengthPanel = props => {
         className={css.form}
         initialValues={{ sessionLength: publicData.sessionLength }}
         onSubmit={values => {
-          const { sessionLength = 1 } = values;
+          const { sessionLength } = values;
           const updateValues = {
             publicData: {
               sessionLength,

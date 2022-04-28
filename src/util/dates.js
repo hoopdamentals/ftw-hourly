@@ -139,7 +139,7 @@ export const localizeAndFormatDate = (intl, timeZone, date, formattingOptions = 
     //
     // To see the possible values for `hourCycle` and how they render times, see:
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/hourCycle
-    hour: '2-digit',
+    hour: 'numeric',
     minute: '2-digit',
   };
 
@@ -168,7 +168,7 @@ export const localizeAndFormatTime = (
   // Override default formatting options. See the `localizeAndFormatDate`
   // function above for more info on the options.
   formattingOptions = {
-    hour: '2-digit',
+    hour: 'numeric',
     minute: '2-digit',
   }
 ) => {
@@ -195,9 +195,14 @@ const findBookingUnitBoundaries = params => {
     nextBoundaryFn,
     intl,
     timeZone,
+    sessionLength,
   } = params;
 
-  if (moment(currentBoundary).isBetween(startMoment, endMoment, null, '[]')) {
+  const momentCurrentBoundary = moment(currentBoundary);
+  debugger;
+
+  // debugger;
+  if (momentCurrentBoundary.isBetween(startMoment, endMoment, null, '[]')) {
     const timeOfDay = localizeAndFormatTime(intl, timeZone, currentBoundary);
     // Choose the previous (aka first) sharp hour boundary,
     // if daylight saving time (DST) creates the same time of day two times.
@@ -216,7 +221,7 @@ const findBookingUnitBoundaries = params => {
     return findBookingUnitBoundaries({
       ...params,
       cumulatedResults: [...cumulatedResults, ...newBoundary],
-      currentBoundary: moment(nextBoundaryFn(timeZone, currentBoundary)),
+      currentBoundary: moment(nextBoundaryFn(timeZone, currentBoundary, sessionLength)),
     });
   }
   return cumulatedResults;
@@ -230,13 +235,19 @@ const findBookingUnitBoundaries = params => {
  *
  * @returns {Array} an array of localized hours.
  */
-export const findNextBoundary = (timeZone, currentMomentOrDate, sessionLength = 1) =>
-  moment(currentMomentOrDate)
+export const findNextBoundary = (timeZone, currentMomentOrDate, sessionLength) => {
+  if (!sessionLength) {
+    sessionLength = 1;
+  }
+  const nextBoundary = moment(currentMomentOrDate)
     .clone()
     .tz(timeZone)
     .add(sessionLength, 'hour')
     .startOf('hour')
     .toDate();
+  debugger;
+  return nextBoundary;
+};
 
 /**
  * Find sharp hours inside given time window. Returned strings are localized to given time zone.
@@ -268,25 +279,34 @@ export const findNextBoundary = (timeZone, currentMomentOrDate, sessionLength = 
  *
  * @returns {Array} an array of objects with keys timestamp and timeOfDay.
  */
-export const getSharpHours = (intl, timeZone, startTime, endTime) => {
+export const getSharpHours = (intl, timeZone, startTime, endTime, sessionLength) => {
   if (!moment.tz.zone(timeZone)) {
     throw new Error(
       'Time zones are not loaded into moment-timezone. "getSharpHours" function uses time zones.'
     );
   }
 
+  const startMoment = moment(startTime);
+  const endMoment = moment(endTime);
+
+  // console.log(`getSharpHours startMoment ${startMoment} endMoment ${endMoment}`);
+
   // Select a moment before startTime to find next possible sharp hour.
   // I.e. startTime might be a sharp hour.
   const millisecondBeforeStartTime = new Date(startTime.getTime() - 1);
-  return findBookingUnitBoundaries({
-    currentBoundary: findNextBoundary(timeZone, millisecondBeforeStartTime),
+
+  const boundaries = findBookingUnitBoundaries({
+    currentBoundary: findNextBoundary(timeZone, millisecondBeforeStartTime, 1),
     startMoment: moment(startTime),
     endMoment: moment(endTime),
     nextBoundaryFn: findNextBoundary,
     cumulatedResults: [],
     intl,
     timeZone,
+    sessionLength,
   });
+
+  return boundaries;
 };
 
 /**
@@ -316,8 +336,9 @@ export const getSharpHours = (intl, timeZone, startTime, endTime) => {
  *
  * @returns {Array} an array of objects with keys timestamp and timeOfDay.
  */
-export const getStartHours = (intl, timeZone, startTime, endTime) => {
-  const hours = getSharpHours(intl, timeZone, startTime, endTime);
+export const getStartHours = (intl, timeZone, startTime, endTime, sessionLength) => {
+  // debugger;
+  const hours = getSharpHours(intl, timeZone, startTime, endTime, sessionLength);
   return hours.length < 2 ? hours : hours.slice(0, -1);
 };
 
@@ -348,8 +369,8 @@ export const getStartHours = (intl, timeZone, startTime, endTime) => {
  *
  * @returns {Array} an array of objects with keys timestamp and timeOfDay.
  */
-export const getEndHours = (intl, timeZone, startTime, endTime) => {
-  const hours = getSharpHours(intl, timeZone, startTime, endTime);
+export const getEndHours = (intl, timeZone, startTime, endTime, sessionLength) => {
+  const hours = getSharpHours(intl, timeZone, startTime, endTime, sessionLength);
   return hours.length < 2 ? [] : hours.slice(1);
 };
 
@@ -798,9 +819,13 @@ export const formatDateToText = (intl, date, timeZone) => {
  * @returns {int} quantity of hours between start and end
  *
  */
-export const calculateQuantityFromHours = (startDate, endDate) => {
-  const hours = moment(endDate).diff(moment(startDate), 'hours', true);
-  return hours;
+export const calculateQuantityFromHours = (startDate, endDate, sessionLength) => {
+  // const hours = moment(endDate).diff(moment(startDate), 'hours', true);
+  // return hours;
+
+  const hoursDiff = moment(endDate).diff(moment(startDate), 'hours', true);
+  const quantity = Math.ceil(hoursDiff / sessionLength);
+  return quantity;
 };
 
 // Checks if time-range contains a day (moment)

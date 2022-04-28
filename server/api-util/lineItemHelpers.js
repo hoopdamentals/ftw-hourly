@@ -94,12 +94,15 @@ exports.calculateTotalPriceFromSeats = (unitPrice, unitCount, seats) => {
  *
  * @param {Date} startDate
  * @param {Date} endDate
+ * @param {int} sessionLength
  *
  * @returns {int} quantity of hours between start and end
  *
  */
-exports.calculateQuantityFromHours = (startDate, endDate) => {
-  return moment(endDate).diff(moment(startDate), 'hours', true);
+exports.calculateQuantityFromHours = (startDate, endDate, sessionLength) => {
+  const hoursDiff = moment(endDate).diff(moment(startDate), 'hours', true);
+  const quantity = Math.ceil(hoursDiff / sessionLength);
+  return quantity;
 };
 
 /**

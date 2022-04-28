@@ -314,11 +314,15 @@ const fetchMonthlyTimeSlots = (dispatch, listing) => {
 
   // Fetch time-zones on client side only.
   if (hasWindow && listing.id && hasTimeZone) {
+    const publicData = listing.attributes.publicData;
     const tz = listing.attributes.availabilityPlan.timezone;
-    const nextBoundary = findNextBoundary(tz, new Date());
+    const { sessionLength } = publicData;
+    const nextBoundary = findNextBoundary(tz, new Date(), sessionLength);
 
     const nextMonth = nextMonthFn(nextBoundary, tz);
     const nextAfterNextMonth = nextMonthFn(nextMonth, tz);
+
+    console.log(`fetchMonthlyTimeSlots request duck start ${nextBoundary} `);
 
     return Promise.all([
       dispatch(fetchTimeSlots(listing.id, nextBoundary, nextMonth, tz)),

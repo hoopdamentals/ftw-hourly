@@ -29,6 +29,8 @@ const PROVIDER_COMMISSION_PERCENTAGE = -10;
  */
 exports.transactionLineItems = (listing, bookingData) => {
   const unitPrice = listing.attributes.price;
+  const publicData = listing.attributes.publicData;
+  const { sessionLength } = publicData;
   const { startDate, endDate } = bookingData;
 
   /**
@@ -43,7 +45,7 @@ exports.transactionLineItems = (listing, bookingData) => {
   const booking = {
     code: bookingUnitType,
     unitPrice,
-    quantity: calculateQuantityFromHours(startDate, endDate),
+    quantity: calculateQuantityFromHours(startDate, endDate, sessionLength),
     includeFor: ['customer', 'provider'],
   };
 

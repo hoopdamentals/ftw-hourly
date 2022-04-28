@@ -140,8 +140,11 @@ export const TransactionPageComponent = props => {
     const bookingStart = timestampToDate(bookingStartTime);
     const bookingEnd = timestampToDate(bookingEndTime);
 
+    const publicData = listing.attributes.publicData;
+    const { sessionLength } = publicData;
+
     const bookingData = {
-      quantity: calculateQuantityFromHours(bookingStart, bookingEnd),
+      quantity: calculateQuantityFromHours(bookingStart, bookingEnd, sessionLength),
       ...restOfValues,
     };
 

@@ -128,7 +128,8 @@ export const ManageListingCardComponent = props => {
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
   const id = currentListing.id.uuid;
-  const { title = '', price, state } = currentListing.attributes;
+  const { title = '', price, state, publicData } = currentListing.attributes;
+  const { sessionLength } = publicData;
   const slug = createSlug(title);
   const isPendingApproval = state === LISTING_STATE_PENDING_APPROVAL;
   const isClosed = state === LISTING_STATE_CLOSED;
@@ -321,6 +322,15 @@ export const ManageListingCardComponent = props => {
               <FormattedMessage id="ManageListingCard.priceNotSet" />
             </div>
           )}
+        </div>
+
+        <div className={css.price}>
+          <div className={css.priceValue} title={priceTitle}>
+            {sessionLength}
+          </div>
+          <div className={css.perUnit}>
+            <FormattedMessage id={'ManageListingCard.unitSize'} />
+          </div>
         </div>
 
         <div className={css.mainInfo}>

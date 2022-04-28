@@ -24,23 +24,38 @@ import css from './EditListingAvailabilityPlanForm.module.css';
 // const ALL_START_HOURS = [...HOURS].map((v, i) => printHourStrings(i));
 // const ALL_END_HOURS = [...HOURS].map((v, i) => printHourStrings(i + 1));
 
+// const HOURS = [
+//   ...Array.from(
+//     {
+//       length: 48,
+//     },
+//     (_, hour) =>
+//       moment({
+//         hour: Math.floor(hour / 2),
+//         minutes: hour % 2 === 0 ? 0 : 30,
+//       }).format('h:mm A')
+//   ),
+//   '12:00 AM',
+// ];
+
 const HOURS = [
   ...Array.from(
     {
-      length: 48,
+      length: 24,
     },
     (_, hour) =>
       moment({
-        hour: Math.floor(hour / 2),
-        minutes: hour % 2 === 0 ? 0 : 30,
+        hour: hour,
+        minutes: 0,
       }).format('h:mm A')
   ),
   '12:00 AM',
 ];
 
-console.log(HOURS);
-
-const printHourStrings = h => HOURS[h];
+const printHourStrings = h => {
+  const result = HOURS[h];
+  return result;
+};
 
 const ALL_START_HOURS = [...HOURS].filter((v, i) => i != HOURS.length - 1);
 
@@ -52,16 +67,23 @@ const ALL_END_HOURS = [...HOURS].filter((v, i) => i != 0);
 
 const sortEntries = (defaultCompareReturn = 0) => (a, b) => {
   if (a.startTime && b.startTime) {
-    const aStart = Number.parseInt(a.startTime.split(':')[0]);
-    const bStart = Number.parseInt(b.startTime.split(':')[0]);
-    return aStart - bStart;
+    const momentStartA = moment(a.startTime, 'h:mm A');
+    const momentStartB = moment(b.startTime, 'h:mm A');
+
+    if (momentStartA.isAfter(momentStartB)) {
+      return 1;
+    } else {
+      return -1;
+    }
   }
   return defaultCompareReturn;
 };
 
-const findEntryFn = entry => e => e.startTime === entry.startTime && e.endTime === entry.endTime;
+const findEntryFn = entry => e => {
+  return e.startTime === entry.startTime && e.endTime === entry.endTime;
+};
 
-const filterStartHours = (availableStartHours, values, dayOfWeek, index) => {
+const filterStartHours = (availableStartHours, sessionLength, values, dayOfWeek, index) => {
   const entries = values[dayOfWeek];
   const currentEntry = entries[index];
 
@@ -80,19 +102,24 @@ const filterStartHours = (availableStartHours, values, dayOfWeek, index) => {
   // If there is no next entry or the previous entry does not have endTime,
   // return all the available times before current selected end time.
   // Otherwise return all the available start times that are after the previous entry or entries.
+  // const pickBefore = time => h => h < time;
+  // const pickBetween = (start, end) => h => h >= start && h < end;
   const prevEntry = sortedEntries[currentIndex - 1];
+
   const pickBefore = time => h => {
-    const momentHour = moment(h, 'h:mm a');
-    const momentTime = moment(time, 'h:mm a');
+    const momentHour = moment(h, 'h:mm A');
+    const momentTime = moment(time, 'h:mm A');
+    // const momentTimeMinusSession = moment(time, 'h:mm a').subtract(sessionLength, 'hours');
+    // const newResult = momentHour.isSame(momentTimeMinusSession);
     const newResult = momentHour.isBefore(momentTime);
     // console.log(`new pickBefore ${momentHour} < ${momentTime} ${newResult}`);
     return newResult;
   };
 
   const pickBetween = (start, end) => h => {
-    const momentHour = moment(h, 'h:mm a');
-    const momentStart = moment(start, 'h:mm a');
-    const momentEnd = moment(end, 'h:mm a');
+    const momentHour = moment(h, 'h:mm A');
+    const momentStart = moment(start, 'h:mm A');
+    const momentEnd = moment(end, 'h:mm A');
     const newResult = momentHour.isSameOrAfter(momentStart) && momentHour.isBefore(momentEnd);
     // console.log(
     //   `new pickBetween ${momentHour} >= ${momentStart} ${momentHour} < ${momentEnd} ${newResult}`
@@ -105,10 +132,11 @@ const filterStartHours = (availableStartHours, values, dayOfWeek, index) => {
     : availableStartHours.filter(pickBetween(prevEntry.endTime, currentEntry.endTime));
 };
 
-const filterEndHours = (availableEndHours, values, dayOfWeek, index) => {
-  // debugger;
+const filterEndHours = (availableEndHours, sessionLength, values, dayOfWeek, index) => {
   const entries = values[dayOfWeek];
   const currentEntry = entries[index];
+
+  // debugger;
 
   // If there is no start time selected, return an empty array;
   if (!currentEntry.startTime) {
@@ -126,17 +154,22 @@ const filterEndHours = (availableEndHours, values, dayOfWeek, index) => {
   // return all the available end times that are after the start of current entry.
   // Otherwise return all the available end hours between current start time and next entry.
   const nextEntry = sortedEntries[currentIndex + 1];
+  debugger;
+  // const pickAfter = time => h => h > time;
+  // const pickBetween = (start, end) => h => h > start && h <= end;
   const pickAfter = time => h => {
-    const momentHour = moment(h, 'h:mm a');
-    const momentTime = moment(time, 'h:mm a');
+    const momentHour = moment(h, 'h:mm A');
+    const momentTime = moment(time, 'h:mm A');
+    // const momentTimePlusSession = moment(time, 'h:mm a').add(sessionLength, 'hours');
+    // const newResult = momentHour.isSame(momentTimePlusSession);
     const newResult = momentHour.isAfter(momentTime);
     // console.log(`new pickAfter ${momentHour} > ${momentTime} ${newResult}`);
     return newResult;
   };
   const pickBetween = (start, end) => h => {
-    const momentHour = moment(h, 'h:mm a');
-    const momentStart = moment(start, 'h:mm a');
-    const momentEnd = moment(end, 'h:mm a');
+    const momentHour = moment(h, 'h:mm A');
+    const momentStart = moment(start, 'h:mm A');
+    const momentEnd = moment(end, 'h:mm A');
     const newResult = momentHour.isAfter(momentStart) && momentHour.isSameOrBefore(momentEnd);
     // console.log(
     //   `new pickBetween ${momentHour} > ${momentStart} ${momentHour} <= ${momentEnd} ${newResult}`
@@ -169,12 +202,15 @@ const getEntryBoundaries = (values, dayOfWeek, intl, sessionLength, findStartHou
 
       const startHour = HOURS.indexOf(startTime);
       const endHour = HOURS.indexOf(endTime);
+
+      // console.log(` startTime ${startTime} - endTime ${endTime}`);
       // console.log(` startHour ${startHour} - endHour ${endHour}`);
+
       const hoursBetween = Array(endHour - startHour)
         .fill()
         .map((v, i) => {
           const hourString = startHour + i + boundaryDiff;
-          printHourStrings(hourString);
+          return printHourStrings(hourString);
         });
 
       return allHours.concat(hoursBetween);
@@ -218,16 +254,31 @@ const DailyPlan = props => {
             <div className={css.timePicker}>
               {fields.map((name, index) => {
                 // Pick available start hours
-                const pickUnreservedStartHours = h => !getEntryStartTimes(index).includes(h);
+                const pickUnreservedStartHours = h => {
+                  const startTimes = getEntryStartTimes(index);
+                  const doesNotInclude = !startTimes.includes(h);
+                  if (!doesNotInclude) {
+                    debugger;
+                  }
+                  return doesNotInclude;
+                };
                 const availableStartHours = ALL_START_HOURS.filter(pickUnreservedStartHours);
 
                 // Pick available end hours
                 const pickUnreservedEndHours = h => !getEntryEndTimes(index).includes(h);
                 const availableEndHours = ALL_END_HOURS.filter(pickUnreservedEndHours);
 
-                // debugger;
+                const filteredStartHours = filterStartHours(
+                  availableStartHours,
+                  sessionLength,
+                  values,
+                  dayOfWeek,
+                  index
+                );
+
                 const filteredEndHours = filterEndHours(
                   availableEndHours,
+                  sessionLength,
                   values,
                   dayOfWeek,
                   index
@@ -245,13 +296,11 @@ const DailyPlan = props => {
                           <option disabled value="">
                             {startTimePlaceholder}
                           </option>
-                          {filterStartHours(availableStartHours, values, dayOfWeek, index).map(
-                            s => (
-                              <option value={s} key={s}>
-                                {s}
-                              </option>
-                            )
-                          )}
+                          {filteredStartHours.map(s => (
+                            <option value={s} key={s}>
+                              {s}
+                            </option>
+                          ))}
                         </FieldSelect>
                       </div>
                       <span className={css.dashBetweenTimes}>-</span>
@@ -328,7 +377,6 @@ const DailyPlan = props => {
 };
 
 const submit = (onSubmit, weekdays) => values => {
-  console.log(weekdays);
   const sortedValues = weekdays.reduce(
     (submitValues, day) => {
       return submitValues[day]

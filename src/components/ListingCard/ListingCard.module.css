@@ -45,7 +45,8 @@
   /* Layout */
   display: flex;
   flex-direction: row;
-  padding: 16px 0 2px 0;
+  justify-content: space-around;
+  padding: 10px 0 2px 0;
 }
 
 .price {
@@ -86,6 +87,45 @@
   }
 }
 
+.sessionLength {
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: 18px;
+}
+
+.sessionLengthValue {
+  /* Font */
+  @apply --marketplaceH3FontStyles;
+
+  /* Remove default margins from font */
+  margin-top: 0;
+  margin-bottom: 0;
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.unitSize {
+  /* Font */
+  @apply --marketplaceTinyFontStyles;
+  color: var(--matterColor);
+
+  /* Remove default margins from font */
+  margin-top: 0;
+  margin-bottom: 0;
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
 .mainInfo {
   display: flex;
   flex-direction: column;
@@ -97,11 +137,11 @@
   color: var(--matterColor);
 
   /* Remove default margins from font */
-  margin-top: 0;
+  margin-top: 10;
   margin-bottom: 0;
 
   @media (--viewportMedium) {
-    margin-top: 0;
+    margin-top: 10;
     margin-bottom: 0;
   }
 }

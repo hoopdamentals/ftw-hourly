@@ -60,6 +60,7 @@ export const ListingCardComponent = props => {
   const currentListing = ensureListing(listing);
   const id = currentListing.id.uuid;
   const { title = '', price, publicData } = currentListing.attributes;
+  const { sessionLength } = publicData;
   const slug = createSlug(title);
   const firstImage =
     currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
@@ -97,6 +98,19 @@ export const ListingCardComponent = props => {
           />
         </div>
       </div>
+      <div className={css.mainInfo}>
+        <div className={css.title}>
+          {richText(title, {
+            longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
+            longWordClass: css.longWord,
+          })}
+        </div>
+        <div className={css.certificateInfo}>
+          {certificate && !certificate.hideFromListingInfo ? (
+            <span>{certificate.label}</span>
+          ) : null}
+        </div>
+      </div>
       <div className={css.info}>
         <div className={css.price}>
           <div className={css.priceValue} title={priceTitle}>
@@ -106,17 +120,12 @@ export const ListingCardComponent = props => {
             <FormattedMessage id={unitTranslationKey} />
           </div>
         </div>
-        <div className={css.mainInfo}>
-          <div className={css.title}>
-            {richText(title, {
-              longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
-              longWordClass: css.longWord,
-            })}
+        <div className={css.sessionLength}>
+          <div className={css.sessionLengthValue} title={priceTitle}>
+            {sessionLength}
           </div>
-          <div className={css.certificateInfo}>
-            {certificate && !certificate.hideFromListingInfo ? (
-              <span>{certificate.label}</span>
-            ) : null}
+          <div className={css.unitSize}>
+            <FormattedMessage id={'ListingCard.unitSize'} />
           </div>
         </div>
       </div>

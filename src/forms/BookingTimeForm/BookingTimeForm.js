@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { array, bool, func, object, string } from 'prop-types';
+import { array, bool, func, number, object, string } from 'prop-types';
 import { compose } from 'redux';
 import { Form as FinalForm, FormSpy } from 'react-final-form';
 import classNames from 'classnames';
@@ -34,6 +34,7 @@ export class BookingTimeFormComponent extends Component {
     const startDate = bookingStartTime ? timestampToDate(bookingStartTime) : null;
     const endDate = bookingEndTime ? timestampToDate(bookingEndTime) : null;
 
+    const sessionLength = this.props.sessionLength;
     const listingId = this.props.listingId;
     const isOwnListing = this.props.isOwnListing;
 
@@ -88,6 +89,7 @@ export class BookingTimeFormComponent extends Component {
             intl,
             isOwnListing,
             listingId,
+            sessionLength,
             submitButtonWrapperClassName,
             unitType,
             values,
@@ -178,6 +180,7 @@ export class BookingTimeFormComponent extends Component {
                   {...dateInputProps}
                   className={css.bookingDates}
                   listingId={listingId}
+                  sessionLength={sessionLength}
                   bookingStartLabel={bookingStartLabel}
                   onFetchTimeSlots={onFetchTimeSlots}
                   monthlyTimeSlots={monthlyTimeSlots}
@@ -220,6 +223,7 @@ BookingTimeFormComponent.defaultProps = {
   className: null,
   submitButtonWrapperClassName: null,
   price: null,
+  sessionLength: 1,
   isOwnListing: false,
   listingId: null,
   startDatePlaceholder: null,
@@ -236,6 +240,7 @@ BookingTimeFormComponent.propTypes = {
 
   unitType: propTypes.bookingUnitType.isRequired,
   price: propTypes.money,
+  sessionLength: number,
   isOwnListing: bool,
   listingId: propTypes.uuid,
   monthlyTimeSlots: object,
