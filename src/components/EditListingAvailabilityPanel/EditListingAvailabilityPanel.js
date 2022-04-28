@@ -3,6 +3,7 @@ import { arrayOf, bool, func, object, string } from 'prop-types';
 import classNames from 'classnames';
 import { FormattedMessage } from '../../util/reactIntl';
 import { ensureOwnListing } from '../../util/data';
+import moment from 'moment';
 import { getDefaultTimeZoneOnBrowser, timestampToDate } from '../../util/dates';
 import { LISTING_STATE_DRAFT, DATE_TYPE_DATETIME, propTypes } from '../../util/types';
 import {
@@ -53,9 +54,23 @@ const Weekday = props => {
       <div className={css.entries}>
         {availabilityPlan && hasEntry
           ? getEntries(availabilityPlan, dayOfWeek).map(e => {
+              let startTime;
+              if (e.startTime && (!e.startTime.endsWith('AM') || !e.startTime.endsWith('PM'))) {
+                startTime = moment(e.startTime, 'HH:mm').format('h:mm A');
+              } else {
+                startTime = e.startTime;
+              }
+
+              let endTime;
+              if (e.endTime && (!e.endTime.endsWith('AM') || !e.endTime.endsWith('PM'))) {
+                endTime = moment(e.endTime, 'HH:mm').format('h:mm A');
+              } else {
+                endTime = e.endTime === '00:00' ? '24:00' : e.endTime;
+              }
+
               return (
                 <span className={css.entry} key={`${e.dayOfWeek}${e.startTime}`}>
-                  {`${e.startTime} - ${e.endTime === '00:00' ? '24:00' : e.endTime}`}
+                  {`${startTime} - ${endTime}`}
                   <span style={{ marginLeft: 20 }}>
                     <FormattedMessage
                       id={`EditListingAvailabilityPanel.seatLimit`}
@@ -80,13 +95,28 @@ const createEntryDayGroups = (entries = {}) =>
   entries.reduce((groupedEntries, entry) => {
     const { startTime, endTime: endHour, dayOfWeek, seats } = entry;
     const dayGroup = groupedEntries[dayOfWeek] || [];
+
+    let formattedStartTime;
+    if (startTime && (!startTime.endsWith('AM') || !startTime.endsWith('PM'))) {
+      formattedStartTime = moment(startTime, 'HH:mm').format('h:mm A');
+    } else {
+      formattedStartTime = startTime;
+    }
+
+    let formattedEndTime;
+    if (endHour && (!endHour.endsWith('AM') || !endHour.endsWith('PM'))) {
+      formattedEndTime = moment(endHour, 'HH:mm').format('h:mm A');
+    } else {
+      formattedEndTime = endHour === '00:00' ? '24:00' : endHour;
+    }
+
     return {
       ...groupedEntries,
       [dayOfWeek]: [
         ...dayGroup,
         {
-          startTime,
-          endTime: endHour === '00:00' ? '24:00' : endHour,
+          startTime: formattedStartTime,
+          endTime: formattedEndTime,
           seats,
         },
       ],
@@ -109,14 +139,28 @@ const createEntriesFromSubmitValues = values =>
     const dayValues = values[dayOfWeek] || [];
     const dayEntries = dayValues.map(dayValue => {
       const { startTime, endTime, seats } = dayValue;
-      return startTime && endTime && seats
-        ? {
-            dayOfWeek,
-            seats,
-            startTime,
-            endTime: endTime === '24:00' ? '00:00' : endTime,
-          }
-        : null;
+      // debugger;
+      if (startTime && (startTime.endsWith('AM') || startTime.endsWith('PM'))) {
+        let momentStartTime = moment(startTime, 'h:mm A').format('HH:mm');
+        let momentEndTime = moment(endTime, 'h:mm A').format('HH:mm');
+        return momentStartTime && momentEndTime && seats
+          ? {
+              dayOfWeek,
+              seats,
+              startTime: momentStartTime,
+              endTime: momentEndTime === '24:00' ? '00:00' : momentEndTime,
+            }
+          : null;
+      } else {
+        return startTime && endTime && seats
+          ? {
+              dayOfWeek,
+              seats,
+              startTime,
+              endTime: endTime === '24:00' ? '00:00' : endTime,
+            }
+          : null;
+      }
     });
 
     return allEntries.concat(dayEntries.filter(e => !!e));
