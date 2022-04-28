@@ -293,7 +293,7 @@
   "EditListingPricingPanel.listingPriceCurrencyInvalid": "Currency in listing is different from the marketplace currency. You cannot edit the price.",
   "EditListingPricingPanel.listingTitle": "your sessions",
   "EditListingPricingPanel.title": "Edit the pricing of {listingTitle}",
-  "EditListingSessionLengthForm.rulesLabel": "Session length",
+  "EditListingSessionLengthForm.rulesLabel": "Session length (hours)",
   "EditListingSessionLengthForm.rulesPlaceholder": "Choose your session length in hours",
   "EditListingSessionLengthForm.showListingFailed": "Fetching data failed",
   "EditListingSessionLengthForm.updateFailed": "Failed to update listing. Please try again.",
