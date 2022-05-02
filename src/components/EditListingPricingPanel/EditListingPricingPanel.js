@@ -57,7 +57,6 @@ const EditListingPricingPanel = props => {
         const { price } = values;
         const updatedValues = {
           price,
-          publicData: { transactionFee: { amount: 250, currency: 'USD' } },
         };
         console.log(updatedValues);
         onSubmit(updatedValues);

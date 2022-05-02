@@ -1,4 +1,4 @@
-const { calculateQuantityFromHours, calculateTotalFromLineItems } = require('./lineItemHelpers');
+const { calculateQuantityFromHours, calculateTransactionFee } = require('./lineItemHelpers');
 const { types } = require('sharetribe-flex-sdk');
 const { Money } = types;
 
@@ -49,41 +49,15 @@ exports.transactionLineItems = (listing, bookingData) => {
     includeFor: ['customer', 'provider'],
   };
 
-  const transactionFeePrice = resolvetransactionFeePrice(listing);
-  const transactionFee = transactionFeePrice
-    ? [
-        {
-          code: 'line-item/transaction-fee',
-          unitPrice: transactionFeePrice,
-          quantity: 1,
-          includeFor: ['customer'],
-        },
-      ]
-    : [];
+  const commission = calculateTransactionFee([booking]);
+  const transactionFee = {
+    code: 'line-item/transaction-fee',
+    unitPrice: commission,
+    quantity: 1,
+    includeFor: ['customer'],
+  };
 
-  // const providerCommission = {
-  //   code: 'line-item/provider-commission',
-  //   unitPrice: calculateTotalFromLineItems([booking, ...transactionFee]),
-  //   percentage: PROVIDER_COMMISSION_PERCENTAGE,
-  //   includeFor: ['provider'],
-  // };
-
-  // const lineItems = [booking, ...transactionFee, providerCommission];
-  const lineItems = [booking, ...transactionFee];
+  const lineItems = [booking, transactionFee];
 
   return lineItems;
-};
-
-const resolvetransactionFeePrice = listing => {
-  const publicData = listing.attributes.publicData;
-  console.log(publicData);
-  const transactionFee = publicData && publicData.transactionFee;
-  console.log(transactionFee);
-  const { amount, currency } = transactionFee;
-
-  if (amount && currency) {
-    return new Money(amount, currency);
-  }
-
-  return null;
 };
