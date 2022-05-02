@@ -1,4 +1,8 @@
-const { calculateQuantityFromHours, calculateTransactionFee } = require('./lineItemHelpers');
+const {
+  calculateQuantityFromHours,
+  calculateTransactionFee,
+  calculateProcessingFee,
+} = require('./lineItemHelpers');
 const { types } = require('sharetribe-flex-sdk');
 const { Money } = types;
 
@@ -57,7 +61,15 @@ exports.transactionLineItems = (listing, bookingData) => {
     includeFor: ['customer'],
   };
 
-  const lineItems = [booking, transactionFee];
+  const processing = calculateProcessingFee([booking]);
+  const processingFee = {
+    code: 'line-item/processing-fee',
+    unitPrice: processing,
+    quantity: 1,
+    includeFor: ['provider'],
+  };
+
+  const lineItems = [booking, transactionFee, processingFee];
 
   return lineItems;
 };

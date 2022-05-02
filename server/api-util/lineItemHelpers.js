@@ -178,6 +178,13 @@ exports.calculateTransactionFee = lineItems => {
   return new Money(commission, totalPrice.currency);
 };
 
+exports.calculateProcessingFee = lineItems => {
+  const totalPrice = this.calculateTotalFromLineItems(lineItems);
+
+  const commission = totalPrice.amount * -0.03;
+  return new Money(commission, totalPrice.currency);
+};
+
 /**
  * Constructs lineItems that can be used directly in FTW.
  * This function checks lineItem code and adds attributes like lineTotal and reversal
