@@ -179,13 +179,9 @@ exports.calculateTransactionFee = lineItems => {
 };
 
 exports.calculateProcessingFee = lineItems => {
-  console.log('calculateProcessingFee');
   const totalPrice = this.calculateTotalFromLineItems(lineItems);
-  console.log(totalPrice);
   const grossPrice = totalPrice.amount * 1.05;
-  console.log(grossPrice);
   const processingFee = (grossPrice * 0.029 + 30) * -1;
-  console.log(processingFee);
   return new Money(processingFee, totalPrice.currency);
 };
 
