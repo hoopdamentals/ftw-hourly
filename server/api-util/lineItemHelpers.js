@@ -174,13 +174,13 @@ exports.calculateTotalForCustomer = lineItems => {
 exports.calculateTransactionFee = lineItems => {
   const totalPrice = this.calculateTotalFromLineItems(lineItems);
 
-  const commission = totalPrice.amount * 0.05;
+  const commission = totalPrice.amount * 0.06;
   return new Money(commission, totalPrice.currency);
 };
 
 exports.calculateProcessingFee = lineItems => {
   const totalPrice = this.calculateTotalFromLineItems(lineItems);
-  const grossPrice = totalPrice.amount * 1.05;
+  const grossPrice = totalPrice.amount * 1.06;
   const processingFee = (grossPrice * 0.029 + 30) * -1;
   return new Money(processingFee, totalPrice.currency);
 };
