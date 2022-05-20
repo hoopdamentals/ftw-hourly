@@ -106,7 +106,7 @@ const EmailVerificationFormComponent = props => (
           </div>
 
           <div className={css.bottomWrapper}>
-            <NamedLink className={css.submitButton} name="LandingPage">
+            <NamedLink className={css.submitButton} name="InboxPage" params={{ tab: 'orders' }}>
               <FormattedMessage id="EmailVerificationForm.successButtonText" />
             </NamedLink>
           </div>
