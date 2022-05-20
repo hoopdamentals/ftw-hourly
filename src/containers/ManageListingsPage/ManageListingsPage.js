@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import { propTypes } from '../../util/types';
+
 import { isScrollingDisabled } from '../../ducks/UI.duck';
+
 import {
   ManageListingCard,
   Page,
@@ -15,8 +18,11 @@ import {
   LayoutWrapperMain,
   LayoutWrapperFooter,
   Footer,
+  NamedLink,
+  PrimaryButton,
 } from '../../components';
 import { TopbarContainer } from '../../containers';
+import routeConfiguration from '../../routeConfiguration';
 
 import { closeListing, openListing, getOwnListingsById } from './ManageListingsPage.duck';
 import css from './ManageListingsPage.module.css';
@@ -54,9 +60,19 @@ export class ManageListingsPageComponent extends Component {
     const listingsAreLoaded = !queryInProgress && hasPaginationInfo;
 
     const loadingResults = (
-      <h2 className={css.title}>
-        <FormattedMessage id="ManageListingsPage.loadingOwnListings" />
-      </h2>
+      <div
+        style={{
+          display: 'flex',
+          minHeight: 600,
+          minWidth: 600,
+          justifyContent: 'center',
+          marginTop: 40,
+        }}
+      >
+        <h2 className={css.title} style={{ fontSize: 30 }}>
+          <FormattedMessage id="ManageListingsPage.loadingOwnListings" />
+        </h2>
+      </div>
     );
 
     const queryError = (
@@ -67,19 +83,44 @@ export class ManageListingsPageComponent extends Component {
 
     const noResults =
       listingsAreLoaded && pagination.totalItems === 0 ? (
-        <h1 className={css.title}>
-          <FormattedMessage id="ManageListingsPage.noResults" />
-        </h1>
+        <div className={css.headingContainerNoResults}>
+          <h1>
+            <FormattedMessage id="ManageListingsPage.noResults" />
+          </h1>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: 30 }}>
+            <div className={css.createListingButtonWrapper}>
+              <NamedLink className={css.manageLink} name="NewListingPage">
+                <PrimaryButton className={css.createListingButton}>
+                  <FormattedMessage id="ManageListingsPage.createListing" />
+                </PrimaryButton>
+              </NamedLink>
+            </div>
+            <div className={css.createFirstListingButtonWrapper}>
+              <NamedLink className={css.manageLink} name="ProfileSettingsPage">
+                <PrimaryButton className={css.createListingButton}>
+                  <FormattedMessage id="ManageListingsPage.updateProfile" />
+                </PrimaryButton>
+              </NamedLink>
+            </div>
+          </div>
+        </div>
       ) : null;
 
     const heading =
       listingsAreLoaded && pagination.totalItems > 0 ? (
-        <h1 className={css.title}>
-          <FormattedMessage
-            id="ManageListingsPage.youHaveListings"
-            values={{ count: pagination.totalItems }}
-          />
-        </h1>
+        <div className={css.headingContainerWithResults}>
+          <h1 style={{ width: 'auto' }}>
+            <FormattedMessage
+              id="ManageListingsPage.youHaveListings"
+              values={{ count: pagination.totalItems }}
+            />
+          </h1>
+          <div className={css.createAnotherListingButtonWrapper}>
+            <NamedLink className={css.manageLink} name="NewListingPage">
+              <FormattedMessage id="ManageListingsPage.createAnotherListing" />
+            </NamedLink>
+          </div>
+        </div>
       ) : (
         noResults
       );

@@ -48,18 +48,6 @@
   }
 }
 
-.title {
-  margin: 0 24px 24px 24px;
-
-  @media (--viewportMedium) {
-    margin: 0 24px 48px 24px;
-  }
-
-  @media (--viewportLarge) {
-    margin: 0 36px 48px 36px;
-  }
-}
-
 .listingCards {
   padding: 0 24px 96px 24px;
 
@@ -140,4 +128,51 @@
   @media (--viewportLarge) {
     margin: auto 36px 0 36px;
   }
+}
+
+.headingContainerWithResults {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  margin: 0 24px 24px 24px;
+
+  @media (--viewportMedium) {
+    margin: 0 24px 48px 24px;
+  }
+
+  @media (--viewportLarge) {
+    margin: 0 36px 48px 36px;
+  }
+}
+
+.headingContainerNoResults {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  margin: 0 24px 24px 24px;
+
+  @media (--viewportMedium) {
+    margin: 0 24px 48px 24px;
+  }
+
+  @media (--viewportLarge) {
+    margin: 0 36px 48px 36px;
+  }
+}
+
+.createAnotherListingButtonWrapper {
+  flex-shrink: 0;
+  margin-left: 40px;
+  background-color: var(--matterColorLight);
+}
+
+.createFirstListingButtonWrapper {
+  flex-shrink: 0;
+  background-color: var(--matterColorLight);
+}
+
+.createListingButton {
+  padding: 10px 20px;
 }
