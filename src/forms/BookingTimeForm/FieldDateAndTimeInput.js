@@ -442,8 +442,6 @@ class FieldDateAndTimeInput extends Component {
 
     // console.log('firstAvailableStartTime');
     // console.log(firstAvailableStartTime);
-    console.log('availableStartTimes');
-    console.log(availableStartTimes);
 
     const { startTime, endDate, selectedTimeSlot } = getAllTimeValues(
       intl,

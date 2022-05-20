@@ -1,3 +1,5 @@
+@import '../../styles/propertySets.css';
+
 .root {
   display: flex;
   flex-direction: column;
@@ -156,11 +158,12 @@ Remember to do required code changes also in FieldDateAndTimeInput.js!
 }
 
 .seatsLabel {
-  @apply --marketplaceModalTitleStyles;
+  /* @apply --marketplaceModalTitleStyles; */
   color: var(--marketplaceColor);
   margin-top: 20px;
   width: 100%;
   text-align: center;
+  font-size: 16px;
 }
 
 /**

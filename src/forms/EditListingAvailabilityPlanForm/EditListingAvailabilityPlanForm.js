@@ -154,7 +154,7 @@ const filterEndHours = (availableEndHours, sessionLength, values, dayOfWeek, ind
   // return all the available end times that are after the start of current entry.
   // Otherwise return all the available end hours between current start time and next entry.
   const nextEntry = sortedEntries[currentIndex + 1];
-  debugger;
+
   // const pickAfter = time => h => h > time;
   // const pickBetween = (start, end) => h => h > start && h <= end;
   const pickAfter = time => h => {
@@ -258,7 +258,6 @@ const DailyPlan = props => {
                   const startTimes = getEntryStartTimes(index);
                   const doesNotInclude = !startTimes.includes(h);
                   if (!doesNotInclude) {
-                    debugger;
                   }
                   return doesNotInclude;
                 };

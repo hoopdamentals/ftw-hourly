@@ -199,7 +199,6 @@ const findBookingUnitBoundaries = params => {
   } = params;
 
   const momentCurrentBoundary = moment(currentBoundary);
-  debugger;
 
   // debugger;
   if (momentCurrentBoundary.isBetween(startMoment, endMoment, null, '[]')) {
@@ -245,7 +244,6 @@ export const findNextBoundary = (timeZone, currentMomentOrDate, sessionLength) =
     .add(sessionLength, 'hour')
     .startOf('hour')
     .toDate();
-  debugger;
   return nextBoundary;
 };
 
