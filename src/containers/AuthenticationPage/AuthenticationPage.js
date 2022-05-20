@@ -92,6 +92,7 @@ export class AuthenticationPageComponent extends Component {
     const authinfoFrom =
       this.state.authInfo && this.state.authInfo.from ? this.state.authInfo.from : null;
     const from = locationFrom ? locationFrom : authinfoFrom ? authinfoFrom : null;
+    debugger;
 
     const user = ensureCurrentUser(currentUser);
     const currentUserLoaded = !!user.id;
@@ -103,10 +104,15 @@ export class AuthenticationPageComponent extends Component {
     const showEmailVerification = !isLogin && currentUserLoaded && !user.attributes.emailVerified;
 
     // Already authenticated, redirect away from auth page
-    if (isAuthenticated && from) {
-      return <Redirect to={from} />;
-    } else if (isAuthenticated && currentUserLoaded && !showEmailVerification) {
-      return <NamedRedirect name="LandingPage" />;
+    // if (isAuthenticated && from) {
+    //   if (currentUserLoaded) {
+    //     <NamedRedirect name="ProfilePage" params={{ id: user.id.uuid }} />;
+    //   } else {
+    //     return <Redirect to={from} />;
+    //   }
+    // } else
+    if (isAuthenticated && currentUserLoaded && !showEmailVerification) {
+      return <NamedRedirect name="ProfilePage" params={{ id: user.id.uuid }} />;
     }
 
     const loginErrorMessage = (
@@ -209,7 +215,8 @@ export class AuthenticationPageComponent extends Component {
       const fromParam = from ? `from=${from}` : '';
 
       // Default route where user is returned after successfull authentication
-      const defaultReturn = pathByRouteName('LandingPage', routes);
+      const params = { id: user.id.uuid };
+      const defaultReturn = pathByRouteName('ProfilePage', routes, params);
       const defaultReturnParam = defaultReturn ? `&defaultReturn=${defaultReturn}` : '';
 
       // Route for confirming user data before creating a new user
@@ -268,11 +275,6 @@ export class AuthenticationPageComponent extends Component {
     const showGoogleLogin = !!process.env.REACT_APP_GOOGLE_CLIENT_ID;
     const showLinkedInLogin = !!process.env.REACT_APP_LINKEDIN_CLIENT_ID;
     const showSocialLogins = showFacebookLogin || showGoogleLogin || showLinkedInLogin;
-
-    console.log('Environment Vars');
-    console.log(process.env);
-    console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
-    console.log(process.env.GOOGLE_CLIENT_SECRET);
 
     const facebookButtonText = isLogin ? (
       <FormattedMessage id="AuthenticationPage.loginWithFacebook" />
