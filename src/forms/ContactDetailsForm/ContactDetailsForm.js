@@ -233,9 +233,10 @@ class ContactDetailsFormComponent extends Component {
             ? passwordFailedMessage
             : null;
 
-          const confirmClasses = classNames(css.confirmChangesSection, {
-            [css.confirmChangesSectionVisible]: emailChanged,
-          });
+          const confirmClasses = classNames(
+            css.confirmChangesSection,
+            emailChanged ? [css.confirmChangesSectionVisible] : [css.confirmChangesSectionHidden]
+          );
 
           // generic error
           const isGenericEmailError = saveEmailError && !(emailTakenErrorText || passwordErrorText);

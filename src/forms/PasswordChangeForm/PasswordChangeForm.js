@@ -121,9 +121,10 @@ class PasswordChangeFormComponent extends Component {
             ? passwordFailedMessage
             : null;
 
-          const confirmClasses = classNames(css.confirmChangesSection, {
-            [css.confirmChangesSectionVisible]: !pristine,
-          });
+          const confirmClasses = classNames(
+            css.confirmChangesSection,
+            pristine ? [css.confirmChangesSectionHidden] : [css.confirmChangesSectionVisible]
+          );
 
           const genericFailure =
             changePasswordError && !passwordErrorText ? (

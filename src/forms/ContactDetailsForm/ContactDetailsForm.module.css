@@ -50,6 +50,12 @@
 
 .confirmChangesSectionVisible {
   opacity: 1;
+  height: auto;
+}
+
+.confirmChangesSectionHidden {
+  opacity: 0;
+  height: 0px;
 }
 
 .emailVerified {
@@ -125,11 +131,7 @@
 }
 
 .bottomWrapper {
-  margin-top: 46px;
-
-  @media (--viewportMedium) {
-    margin-top: 96px;
-  }
+  margin-top: 10px;
 }
 
 .error {
