@@ -4,7 +4,13 @@
 
 {{~#*inline "format-date"~}}
 {{#with transaction.listing.availability-plan}}
-{{date date format="h:mm a" tz=timezone}} on {{date date format="MMM d, YYYY" tz=timezone}}
+{{date date format="MMM d, YYYY" tz=timezone}} at {{date date format="h:mm a" tz=timezone}}
+{{/with}}
+{{~/inline~}}
+
+{{~#*inline "format-time"~}}
+{{#with transaction.listing.availability-plan}}
+{{date date format="h:mm a" tz=timezone}}
 {{/with}}
 {{~/inline~}}
 
@@ -50,10 +56,9 @@
     <h1>You have been paid {{> format-money money=payout-total}}</h1>
 
     <p>
-      We have sent you {{> format-money money=payout-total}} for the booking of
-      {{ listing.title }} from {{> format-date date=booking.start}} to
-      {{> format-date date=booking.end}} by {{ customer.display-name }}. It might take up to 7
-      days for the money to reach your bank account.
+      We have sent you {{> format-money money=payout-total}} for the booking of {{ listing.title }}
+      from {{> format-date date=booking.start}} to {{> format-time date=booking.end}} by {{
+      customer.display-name }}. It might take up to 7 days for the money to reach your bank account.
     </p>
 
     <p>Here's the breakdown.</p>
@@ -74,14 +79,12 @@
         </tr>
       </thead>
       <tbody>
-        {{#each tx-line-items}}
-        {{#contains include-for "provider"}}
-        {{#eq "line-item/units" code}}
+        {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq "line-item/units" code}}
         {{#if seats}}
         <tr class="top-row">
           <td colspan="2">
-            {{> format-money money=unit-price}} &times; {{number units}}
-            {{inflect units "unit" "units"}}
+            {{> format-money money=unit-price}} &times; {{number units}} {{inflect units "session"
+            "sessions"}}
           </td>
         </tr>
         <tr class="bottom-row">
@@ -90,8 +93,8 @@
         {{else}}
         <tr class="top-row bottom-row">
           <td colspan="2">
-            {{> format-money money=unit-price}} &times; {{number quantity}}
-            {{inflect quantity "unit" "units"}}
+            {{> format-money money=unit-price}} &times; {{number quantity}} {{inflect quantity
+            "session" "sessions"}}
           </td>
         </tr>
         {{/if}}
@@ -99,16 +102,12 @@
           <th class="left">Subtotal</th>
           <th class="right">{{> format-money money=line-total}}</th>
         </tr>
-        {{/eq}}
-
-        {{#eq "line-item/provider-commission" code}}
+        {{/eq}} {{#eq "line-item/provider-commission" code}}
         <tr class="bottom-row">
           <td>{{ marketplace.name }} fee</td>
           <td class="right">{{> format-money money=line-total}}</td>
         </tr>
-        {{/eq}}
-        {{/contains}}
-        {{/each}}
+        {{/eq}} {{/contains}} {{/each}}
       </tbody>
       <tfoot>
         <tr class="top-row">

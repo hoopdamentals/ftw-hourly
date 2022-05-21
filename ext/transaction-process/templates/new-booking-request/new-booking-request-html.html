@@ -4,7 +4,13 @@
 
 {{~#*inline "format-date"~}}
 {{#with transaction.listing.availability-plan}}
-{{date date format="h:mm a" tz=timezone}} on {{date date format="MMM d, YYYY" tz=timezone}}
+{{date date format="MMM d, YYYY" tz=timezone}} at {{date date format="h:mm a" tz=timezone}}
+{{/with}}
+{{~/inline~}}
+
+{{~#*inline "format-time"~}}
+{{#with transaction.listing.availability-plan}}
+{{date date format="h:mm a" tz=timezone}}
 {{/with}}
 {{~/inline~}}
 
@@ -50,9 +56,8 @@
     <h1>Please respond to a request by {{ customer.display-name }}</h1>
 
     <p>
-      Good news! {{ customer.display-name }} just requested to book {{ listing.title }} from
-      {{> format-date date=booking.start}} to {{> format-date date=booking.end}}. Here's the
-      breakdown.
+      Good news! {{ customer.display-name }} just requested to book {{ listing.title }} on {{>
+      format-date date=booking.start}} to {{> format-time date=booking.end}}. Here's the breakdown.
     </p>
     <table>
       <thead>
@@ -70,14 +75,12 @@
         </tr>
       </thead>
       <tbody>
-        {{#each tx-line-items}}
-        {{#contains include-for "provider"}}
-        {{#eq "line-item/units" code}}
+        {{#each tx-line-items}} {{#contains include-for "provider"}} {{#eq "line-item/units" code}}
         {{#if seats}}
         <tr class="top-row">
           <td colspan="2">
-            {{> format-money money=unit-price}} &times; {{number units}}
-            {{inflect units "unit" "units"}}
+            {{> format-money money=unit-price}} &times; {{number units}} {{inflect units "session"
+            "sessions"}}
           </td>
         </tr>
         <tr class="bottom-row">
@@ -86,8 +89,8 @@
         {{else}}
         <tr class="top-row bottom-row">
           <td colspan="2">
-            {{> format-money money=unit-price}} &times; {{number quantity}}
-            {{inflect quantity "unit" "units"}}
+            {{> format-money money=unit-price}} &times; {{number quantity}} {{inflect quantity
+            "session" "sessions"}}
           </td>
         </tr>
         {{/if}}
@@ -95,16 +98,12 @@
           <th class="left">Subtotal</th>
           <th class="right">{{> format-money money=line-total}}</th>
         </tr>
-        {{/eq}}
-
-        {{#eq "line-item/provider-commission" code}}
+        {{/eq}} {{#eq "line-item/provider-commission" code}}
         <tr class="bottom-row">
           <td>{{ marketplace.name }} fee</td>
           <td class="right">{{> format-money money=line-total}}</td>
         </tr>
-        {{/eq}}
-        {{/contains}}
-        {{/each}}
+        {{/eq}} {{/contains}} {{/each}}
       </tbody>
       <tfoot>
         <tr class="top-row">
@@ -115,15 +114,9 @@
     </table>
 
     <p>
-      You need to accept the request by {{> format-date date=delayed-transition.run-at}}. Otherwise
-      the request will be expired and you won't get paid. If the booked dates won't work for you,
-      you can also choose to decline the request.
-    </p>
-
-    <p>
-      <a href="{{ marketplace.url }}/sale/{{url-encode id}}/details"
-        >Accept or decline the booking</a
-      >
+      To get paid, accept this request when the session has been completed. If you have to cancel
+      the session, click <a href="{{ marketplace.url }}/sale/{{url-encode id}}/details">here</a> to
+      decline.
     </p>
 
     {{/with}}

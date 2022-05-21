@@ -194,6 +194,7 @@ const TopbarDesktop = props => {
   return (
     <nav className={classes}>
       <NamedLink className={css.logoLink} name="LandingPage">
+        {/* <NamedLink className={css.logoLink} name="ProfilePage" params={{ id: currentUser.id.uuid }}> */}
         <Logo
           format="desktop"
           className={css.logo}

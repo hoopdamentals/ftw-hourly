@@ -80,7 +80,7 @@
     {:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}],
    :from :state/accepted,
-   :to :state/cancelled}
+   :to :state/cancelled}]
  :notifications
  [{:name :notification/new-booking-request,
    :on :transition/confirm-payment,
@@ -94,12 +94,9 @@
    :on :transition/decline,
    :to :actor.role/customer,
    :template :booking-request-declined}
-  {:name :notification/booking-request-auto-declined,
-   :on :transition/expire,
-   :to :actor.role/customer,
-   :template :booking-request-auto-declined}
   {:name :notification/money-paid,
    :on :transition/complete,
    :to :actor.role/provider,
    :template :money-paid}
   ]}
+

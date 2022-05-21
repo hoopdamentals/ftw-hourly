@@ -180,7 +180,7 @@ const PanelHeading = props => {
             <p className={css.transactionInfoMessage}>
               <FormattedMessage
                 id="TransactionPanel.orderPreauthorizedInfo"
-                values={{ providerName }}
+                values={{ providerName, listingLink }}
               />
             </p>
           ) : null}

@@ -118,7 +118,10 @@ const resolveTransitionMessage = (
   switch (currentTransition) {
     case TRANSITION_CONFIRM_PAYMENT:
       return isOwnTransition ? (
-        <FormattedMessage id="ActivityFeed.ownTransitionRequest" values={{ listingTitle }} />
+        <FormattedMessage
+          id="ActivityFeed.ownTransitionRequest"
+          values={{ displayName, listingTitle }}
+        />
       ) : (
         <FormattedMessage
           id="ActivityFeed.transitionRequest"

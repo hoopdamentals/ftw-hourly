@@ -1,6 +1,12 @@
 {{~#*inline "format-date"~}}
 {{#with transaction.listing.availability-plan}}
-{{date date format="h:mm a" tz=timezone}} on {{date date format="MMM d, YYYY" tz=timezone}}
+{{date date format="MMM d, YYYY" tz=timezone}} at {{date date format="h:mm a" tz=timezone}}
+{{/with}}
+{{~/inline~}}
+
+{{~#*inline "format-time"~}}
+{{#with transaction.listing.availability-plan}}
+{{date date format="h:mm a" tz=timezone}}
 {{/with}}
 {{~/inline~}}
 
@@ -10,9 +16,9 @@
 
     {{#with transaction}}
     <p>
-      Unfortunately {{ provider.display-name }} decided to decline your booking request for
-      {{ listing.title }} from {{> format-date date=booking.start}} to
-      {{> format-date date=booking.end}}. You have not been billed.
+      Unfortunately {{ provider.display-name }} decided to decline your booking request for {{
+      listing.title }} on {{> format-date date=booking.start}} to {{> format-time
+      date=booking.end}}. You have not been billed.
     </p>
     {{/with}}
 

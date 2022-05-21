@@ -67,24 +67,38 @@ const Footer = props => {
             <div className={css.infoLinks}>
               <ul className={css.list}>
                 <li className={css.listItem}>
-                  <NamedLink name="AboutPage" className={css.link}>
+                  <ExternalLink className={css.link} href={'https://www.hoopdamentals.com/'}>
                     <FormattedMessage id="Footer.toAboutPage" />
-                  </NamedLink>
+                  </ExternalLink>
                 </li>
                 <li className={css.listItem}>
-                  <NamedLink name="LandingPage" className={css.link}>
+                  <ExternalLink
+                    className={css.link}
+                    href={'https://www.hoopdamentals.com/faq-members'}
+                  >
                     <FormattedMessage id="Footer.toFAQPage" />
-                  </NamedLink>
+                  </ExternalLink>
                 </li>
                 <li className={css.listItem}>
-                  <NamedLink name="LandingPage" className={css.link}>
-                    <FormattedMessage id="Footer.toHelpPage" />
-                  </NamedLink>
+                  <ExternalLink
+                    className={css.link}
+                    href={'https://www.hoopdamentals.com/help-coaches'}
+                  >
+                    <FormattedMessage id="Footer.toCoachHelpPage" />
+                  </ExternalLink>
                 </li>
                 <li className={css.listItem}>
-                  <NamedLink name="AboutPage" to={{ hash: '#contact' }} className={css.link}>
+                  <ExternalLink
+                    className={css.link}
+                    href={'https://www.hoopdamentals.com/help-athletes'}
+                  >
+                    <FormattedMessage id="Footer.toParentHelpPage" />
+                  </ExternalLink>
+                </li>
+                <li className={css.listItem}>
+                  <ExternalLink className={css.link} href={'https://www.hoopdamentals.com/'}>
                     <FormattedMessage id="Footer.toContactPage" />
-                  </NamedLink>
+                  </ExternalLink>
                 </li>
               </ul>
             </div>
@@ -92,14 +106,20 @@ const Footer = props => {
               <div className={css.legalMatters}>
                 <ul className={css.tosAndPrivacy}>
                   <li>
-                    <NamedLink name="TermsOfServicePage" className={css.legalLink}>
+                    <ExternalLink
+                      className={css.legalLink}
+                      href={'https://www.hoopdamentals.com/terms'}
+                    >
                       <FormattedMessage id="Footer.termsOfUse" />
-                    </NamedLink>
+                    </ExternalLink>
                   </li>
                   <li>
-                    <NamedLink name="PrivacyPolicyPage" className={css.legalLink}>
+                    <ExternalLink
+                      className={css.legalLink}
+                      href={'https://www.hoopdamentals.com/privacy-policy'}
+                    >
                       <FormattedMessage id="Footer.privacyPolicy" />
-                    </NamedLink>
+                    </ExternalLink>
                   </li>
                 </ul>
               </div>

@@ -4,7 +4,13 @@
 
 {{~#*inline "format-date"~}}
 {{#with transaction.listing.availability-plan}}
-{{date date format="h:mm a" tz=timezone}} on {{date date format="MMM d, YYYY" tz=timezone}}
+{{date date format="MMM d, YYYY" tz=timezone}} at {{date date format="h:mm a" tz=timezone}}
+{{/with}}
+{{~/inline~}}
+
+{{~#*inline "format-time"~}}
+{{#with transaction.listing.availability-plan}}
+{{date date format="h:mm a" tz=timezone}}
 {{/with}}
 {{~/inline~}}
 
@@ -50,8 +56,8 @@
 
     {{#with transaction}}
     <p>
-      {{ provider.display-name }} has accepted your booking request for {{ listing.title }} from
-      {{> format-date date=booking.start}} to {{> format-date date=booking.end}}.
+      {{ provider.display-name }} has processed your booking for {{ listing.title }} on {{>
+      format-date date=booking.start}} to {{> format-time date=booking.end}}.
     </p>
 
     <p>
@@ -75,14 +81,12 @@
         </tr>
       </thead>
       <tbody>
-        {{#each tx-line-items}}
-        {{#contains include-for "customer"}}
-        {{#eq "line-item/units" code}}
+        {{#each tx-line-items}} {{#contains include-for "customer"}} {{#eq "line-item/units" code}}
         {{#if seats}}
         <tr class="top-row">
           <td colspan="2">
-            {{> format-money money=unit-price}} &times; {{number units}}
-            {{inflect units "unit" "units"}}
+            {{> format-money money=unit-price}} &times; {{number units}} {{inflect units "session"
+            "sessions"}}
           </td>
         </tr>
         <tr class="bottom-row">
@@ -91,14 +95,11 @@
         {{else}}
         <tr class="top-row bottom-row">
           <td colspan="2">
-            {{> format-money money=unit-price}} &times; {{number quantity}}
-            {{inflect quantity "unit" "units"}}
+            {{> format-money money=unit-price}} &times; {{number quantity}} {{inflect quantity
+            "session" "sessions"}}
           </td>
         </tr>
-        {{/if}}
-        {{/eq}}
-        {{/contains}}
-        {{/each}}
+        {{/if}} {{/eq}} {{/contains}} {{/each}}
       </tbody>
       <tfoot>
         <tr class="top-row">
