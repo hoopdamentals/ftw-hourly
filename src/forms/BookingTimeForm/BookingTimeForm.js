@@ -145,7 +145,7 @@ export class BookingTimeFormComponent extends Component {
 
           const bookingInfoErrorMaybe = fetchLineItemsError ? (
             <span className={css.sideBarError}>
-              <FormattedMessage id="BookingDatesForm.fetchLineItemsError" />
+              <FormattedMessage id="BookingTimeForm.fetchLineItemsError" />
             </span>
           ) : null;
 

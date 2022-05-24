@@ -15,7 +15,72 @@ https://github.com/sharetribe/flex-template-web/
 
 ---
 
-## Upcoming version 2021-XX-XX
+## Upcoming version 2022-XX-XX
+
+## [v10.6.1] 2022-05-19
+
+- [fix] undefined REACT_APP_GOOGLE_ANALYTICS_ID caused an error. There was also invalid characters
+  (zero-width space) on added directive [#194](https://github.com/sharetribe/ftw-hourly/pull/194)
+
+  [v10.6.1]: https://github.com/sharetribe/ftw-hourly/compare/v10.6.0...v10.6.1
+
+## [v10.6.0] 2022-05-19
+
+Note: this caused an error. Use v10.6.1 instead.
+
+### Updates from upstream (FTW-daily v8.6.0)
+
+- [change] Google Analytics: remove Universal Analytics and start supporting GA4.
+
+  NOTE: you need to update the Google Analytics id to GA4's id (starting with 'G-' prefix).
+
+  [#1508](https://github.com/sharetribe/ftw-daily/pull/1508)
+
+- [change] Update some outdated dependencies.
+  [#1514](https://github.com/sharetribe/ftw-daily/pull/1514)
+
+  [v10.6.0]: https://github.com/sharetribe/ftw-hourly/compare/v10.5.0...v10.6.0
+
+## [v10.5.0] 2022-05-16
+
+- Add support for hosted translations. (PR made in upstream repo: FTW-daily)
+
+- [delete] Remove old unused translation keys.
+  [#190](https://github.com/sharetribe/ftw-hourly/pull/190)
+
+### Updates from upstream (FTW-daily v8.5.0)
+
+- [add] Add support for hosted translations.
+
+  - This PR fetches "content/translation.json" from a new Asset Delivery API. The file is editable
+    through the Flex Console.
+  - It also adds all the missing translation keys to existing non-English translation files. This
+    means that those files might now include messages in English.
+
+  [#1510](https://github.com/sharetribe/ftw-daily/pull/1510)
+
+- [delete] Remove old unused translation keys.
+  [#1511](https://github.com/sharetribe/ftw-daily/pull/1511)
+
+  [v10.5.0]: https://github.com/sharetribe/ftw-hourly/compare/v10.4.1...v10.5.0
+
+## [v10.4.1] 2022-03-16
+
+- [fix] FieldDateInput: input font-size must be min 16px for mobile. EditListingPage.duck: fix image
+  upload (dublicate images shown). [#186](https://github.com/sharetribe/ftw-daily/pull/186)
+
+### Updates from upstream (FTW-daily v8.4.1)
+
+- [fix] Portal version of Modals couldn't use 100vh on mobile Safari. Safari changes the window's
+  height based on if the location bar is squeezed or not (and that depends on scroll-effect).
+  [#1501](https://github.com/sharetribe/ftw-daily/pull/1501)
+- [fix] Setting multiple environment variables in Windows requires using the set command before each
+  individual variable. Updated the 'for windows users' section in documentation.
+  [#1491](https://github.com/sharetribe/ftw-daily/pull/1491)
+- [add] Code comment about "REACT_APP" prefix in environment variables.
+  [#1492](https://github.com/sharetribe/ftw-daily/pull/1492)
+
+  [v10.4.1]: https://github.com/sharetribe/ftw-hourly/compare/v10.4.0...v10.4.1
 
 ## [v10.4.0] 2021-12-02
 
