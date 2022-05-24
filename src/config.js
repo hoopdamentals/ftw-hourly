@@ -10,7 +10,7 @@ const dev = process.env.REACT_APP_ENV === 'development';
 // Currently, only translation.json is available.
 // Note: the path must match the path defined in Asset Delivery API
 const appCdnAssets = {
-  translations: 'content/translations.json',
+  // translations: 'content/translations.json',
 };
 
 // If you want to change the language, remember to also change the
