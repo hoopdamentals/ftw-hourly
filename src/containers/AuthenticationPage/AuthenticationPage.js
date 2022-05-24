@@ -92,7 +92,6 @@ export class AuthenticationPageComponent extends Component {
     const authinfoFrom =
       this.state.authInfo && this.state.authInfo.from ? this.state.authInfo.from : null;
     const from = locationFrom ? locationFrom : authinfoFrom ? authinfoFrom : null;
-    // debugger;
 
     const user = ensureCurrentUser(currentUser);
     const currentUserLoaded = !!user.id;
@@ -213,17 +212,16 @@ export class AuthenticationPageComponent extends Component {
 
       // Route where the user should be returned after authentication
       // This is used e.g. with EditListingPage and ListingPage
-      const fromParam = from ? `from=${from}` : '';
+      // const fromParam = from ? `from=${from}` : '';
+      const fromParam = 'from=/profile-settings';
 
       // Default route where user is returned after successfull authentication
-      let params;
       let defaultReturn;
       if (!!user && !!user.id) {
-        console.log(user);
-        params = { id: user.id.uuid };
+        const params = { id: user.id.uuid };
         defaultReturn = pathByRouteName('ProfilePage', routes, params);
       } else {
-        defaultReturn = pathByRouteName('LandingPage', routes);
+        defaultReturn = pathByRouteName('ProfileBasePage', routes);
       }
 
       const defaultReturnParam = defaultReturn ? `&defaultReturn=${defaultReturn}` : '';

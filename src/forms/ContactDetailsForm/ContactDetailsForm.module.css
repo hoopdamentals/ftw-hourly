@@ -51,11 +51,14 @@
 .confirmChangesSectionVisible {
   opacity: 1;
   height: auto;
+  display: flex;
 }
 
 .confirmChangesSectionHidden {
-  opacity: 0;
-  height: 0px;
+  display: none !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
 }
 
 .emailVerified {
