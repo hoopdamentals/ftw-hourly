@@ -27,20 +27,21 @@ const lineItemsTotal = lineItems => {
 };
 
 /**
- * Checks if line item represents commission
- */
-const isCommission = lineItem => {
-  return (
-    lineItem.code === LINE_ITEM_PROVIDER_COMMISSION ||
-    lineItem.code === LINE_ITEM_CUSTOMER_COMMISSION
-  );
-};
-
-/**
  * Returns non-commission, non-reversal line items
  */
-const nonCommissionNonReversalLineItems = transaction => {
-  return transaction.attributes.lineItems.filter(item => !isCommission(item) && !item.reversal);
+const nonCommissionReversalLineItems = (transaction, userRole) => {
+  let lineItems = null;
+
+  if (userRole === 'customer') {
+    lineItems = transaction.attributes.lineItems.filter(
+      item => item.code !== 'line-item/processing-fee' && !item.reversal
+    );
+  } else if (userRole === 'provider') {
+    lineItems = transaction.attributes.lineItems.filter(
+      item => item.code !== 'line-item/transaction-fee' && !item.reversal
+    );
+  }
+  return lineItems;
 };
 
 /**
@@ -75,7 +76,7 @@ const LineItemSubTotalMaybe = props => {
   const showSubTotal = txHasCommission(transaction, userRole) || refund;
 
   // all non-reversal, non-commission line items
-  const subTotalLineItems = nonCommissionNonReversalLineItems(transaction);
+  const subTotalLineItems = nonCommissionReversalLineItems(transaction, userRole);
   // line totals of those line items combined
   const subTotal = lineItemsTotal(subTotalLineItems);
 

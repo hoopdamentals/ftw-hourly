@@ -26,29 +26,33 @@ const lineItemsTotal = lineItems => {
 };
 
 /**
- * Checks if line item represents commission
- */
-const isCommission = lineItem => {
-  return (
-    lineItem.code === LINE_ITEM_PROVIDER_COMMISSION ||
-    lineItem.code === LINE_ITEM_CUSTOMER_COMMISSION
-  );
-};
-
-/**
  * Returns non-commission, reversal line items
  */
-const nonCommissionReversalLineItems = transaction => {
-  return transaction.attributes.lineItems.filter(item => !isCommission(item) && item.reversal);
+const nonCommissionReversalLineItems = (transaction, userRole) => {
+  let lineItems = null;
+
+  if (userRole === 'customer') {
+    lineItems = transaction.attributes.lineItems.filter(
+      item => item.code !== 'line-item/processing-fee' && item.reversal
+    );
+  } else if (userRole === 'provider') {
+    lineItems = transaction.attributes.lineItems.filter(
+      item => item.code !== 'line-item/transaction-fee' && item.reversal
+    );
+  }
+  return lineItems;
 };
 
 const LineItemRefundMaybe = props => {
-  const { transaction, intl } = props;
+  const { transaction, userRole, intl } = props;
 
   // all non-commission, reversal line items
-  const refundLineItems = nonCommissionReversalLineItems(transaction);
+  const refundLineItems = nonCommissionReversalLineItems(transaction, userRole);
 
   const refund = lineItemsTotal(refundLineItems);
+
+  console.log(refundLineItems);
+  console.log(refund);
 
   const formattedRefund = refundLineItems.length > 0 ? formatMoney(intl, refund) : null;
 
