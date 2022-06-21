@@ -12,13 +12,13 @@
 
 <html>
   <body>
-    <h1>Your booking request was declined.</h1>
+    <h1>Your booking request was refunded.</h1>
 
     {{#with transaction}}
     <p>
-      Unfortunately {{ provider.display-name }} decided to decline your booking request for {{
+      {{ provider.display-name }} refunded your booking request for {{
       listing.title }} on {{> format-date date=booking.start}} to {{> format-time
-      date=booking.end}}. You have not been billed.
+      date=booking.end}}.
     </p>
     {{/with}}
 

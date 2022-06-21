@@ -56,8 +56,7 @@
 
     {{#with transaction}}
     <p>
-      {{ provider.display-name }} has processed your booking for {{ listing.title }} on {{>
-      format-date date=booking.start}} to {{> format-time date=booking.end}}.
+      Your session for {{ listing.title }} on {{> format-date date=booking.start}} to {{> format-time date=booking.end}} with {{ provider.display-name }} is booked.
     </p>
 
     <p>

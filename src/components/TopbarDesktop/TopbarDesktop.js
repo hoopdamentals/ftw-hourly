@@ -191,10 +191,14 @@ const TopbarDesktop = props => {
     </NamedLink>
   );
 
+  const linkProps =
+    currentUser && currentUser.id
+      ? { name: 'ProfilePage', params: { id: currentUser.id.uuid } }
+      : { name: 'ProfileBasePage' };
+
   return (
     <nav className={classes}>
-      <NamedLink className={css.logoLink} name="LandingPage">
-        {/* <NamedLink className={css.logoLink} name="ProfilePage" params={{ id: currentUser.id.uuid }}> */}
+      <NamedLink className={css.logoLink} {...linkProps}>
         <Logo
           format="desktop"
           className={css.logo}

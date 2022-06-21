@@ -67,11 +67,6 @@ const Footer = props => {
             <div className={css.infoLinks}>
               <ul className={css.list}>
                 <li className={css.listItem}>
-                  <ExternalLink className={css.link} href={'https://www.hoopdamentals.com/'}>
-                    <FormattedMessage id="Footer.toAboutPage" />
-                  </ExternalLink>
-                </li>
-                <li className={css.listItem}>
                   <ExternalLink
                     className={css.link}
                     href={'https://www.hoopdamentals.com/faq-members'}
@@ -92,7 +87,7 @@ const Footer = props => {
                     className={css.link}
                     href={'https://www.hoopdamentals.com/help-athletes'}
                   >
-                    <FormattedMessage id="Footer.toParentHelpPage" />
+                    <FormattedMessage id="Footer.toAthleteHelpPage" />
                   </ExternalLink>
                 </li>
                 <li className={css.listItem}>
