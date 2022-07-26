@@ -92,6 +92,8 @@ export class AuthenticationPageComponent extends Component {
     const authinfoFrom =
       this.state.authInfo && this.state.authInfo.from ? this.state.authInfo.from : null;
     const from = locationFrom ? locationFrom : authinfoFrom ? authinfoFrom : null;
+    console.log('from');
+    console.log(from);
 
     const user = ensureCurrentUser(currentUser);
     const currentUserLoaded = !!user.id;
@@ -111,7 +113,14 @@ export class AuthenticationPageComponent extends Component {
     //   }
     // } else
 
-    if (isAuthenticated && currentUserLoaded && !showEmailVerification) {
+    // if (isAuthenticated && currentUserLoaded && !showEmailVerification) {
+    //   return <NamedRedirect name="ProfilePage" params={{ id: user.id.uuid }} />;
+    // }
+
+    if (isAuthenticated && from) {
+      console.log(from);
+      return <Redirect to={from} />;
+    } else if (isAuthenticated && currentUserLoaded && !showEmailVerification) {
       return <NamedRedirect name="ProfilePage" params={{ id: user.id.uuid }} />;
     }
 
@@ -212,8 +221,8 @@ export class AuthenticationPageComponent extends Component {
 
       // Route where the user should be returned after authentication
       // This is used e.g. with EditListingPage and ListingPage
-      // const fromParam = from ? `from=${from}` : '';
-      const fromParam = 'from=/profile-settings';
+      const fromParam = from ? `from=${from}` : '';
+      // const fromParam = 'from=/profile-settings';
 
       // Default route where user is returned after successfull authentication
       let defaultReturn;
