@@ -75,6 +75,10 @@
   }
 }
 
+.editLink {
+  display: inline;
+}
+
 .desktopHeading {
   display: none;
 
