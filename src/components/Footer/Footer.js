@@ -67,17 +67,14 @@ const Footer = props => {
             <div className={css.infoLinks}>
               <ul className={css.list}>
                 <li className={css.listItem}>
-                  <ExternalLink
-                    className={css.link}
-                    href={'https://www.hoopdamentals.com/faq-members'}
-                  >
+                  <ExternalLink className={css.link} href={'https://www.hoopdamentals.com/faqs'}>
                     <FormattedMessage id="Footer.toFAQPage" />
                   </ExternalLink>
                 </li>
                 <li className={css.listItem}>
                   <ExternalLink
                     className={css.link}
-                    href={'https://www.hoopdamentals.com/help-coaches'}
+                    href={'https://www.hoopdamentals.com/help-trainers'}
                   >
                     <FormattedMessage id="Footer.toCoachHelpPage" />
                   </ExternalLink>

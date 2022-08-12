@@ -84,9 +84,12 @@ export class ManageListingsPageComponent extends Component {
     const noResults =
       listingsAreLoaded && pagination.totalItems === 0 ? (
         <div className={css.headingContainerNoResults}>
-          <h1>
+          <h1 style={{ marginBottom: 0 }}>
             <FormattedMessage id="ManageListingsPage.noResults" />
           </h1>
+          <h4 style={{ marginTop: 0, marginBottom: 20 }}>
+            <FormattedMessage id="ManageListingsPage.noResultsSubText" />
+          </h4>
           <div style={{ display: 'flex', flexDirection: 'row', gap: 30 }}>
             <div className={css.createListingButtonWrapper}>
               <NamedLink className={css.manageLink} name="NewListingPage">
