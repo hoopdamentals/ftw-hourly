@@ -24,33 +24,33 @@ import css from './EditListingAvailabilityPlanForm.module.css';
 // const ALL_START_HOURS = [...HOURS].map((v, i) => printHourStrings(i));
 // const ALL_END_HOURS = [...HOURS].map((v, i) => printHourStrings(i + 1));
 
-// const HOURS = [
-//   ...Array.from(
-//     {
-//       length: 48,
-//     },
-//     (_, hour) =>
-//       moment({
-//         hour: Math.floor(hour / 2),
-//         minutes: hour % 2 === 0 ? 0 : 30,
-//       }).format('h:mm A')
-//   ),
-//   '12:00 AM',
-// ];
-
 const HOURS = [
   ...Array.from(
     {
-      length: 24,
+      length: 48,
     },
     (_, hour) =>
       moment({
-        hour: hour,
-        minutes: 0,
+        hour: Math.floor(hour / 2),
+        minutes: hour % 2 === 0 ? 0 : 30,
       }).format('h:mm A')
   ),
   '12:00 AM',
 ];
+
+// const HOURS = [
+//   ...Array.from(
+//     {
+//       length: 24,
+//     },
+//     (_, hour) =>
+//       moment({
+//         hour: hour,
+//         minutes: 0,
+//       }).format('h:mm A')
+//   ),
+//   '12:00 AM',
+// ];
 
 const printHourStrings = h => {
   const result = HOURS[h];

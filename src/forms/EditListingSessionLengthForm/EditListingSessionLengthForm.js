@@ -66,7 +66,8 @@ export const EditListingSessionLengthFormComponent = props => (
             type="number"
             label={rulesLabelMessage}
             placeholder={rulesPlaceholderMessage}
-            min="1"
+            step="0.5"
+            min="0.5"
           />
 
           <Button

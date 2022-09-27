@@ -11,6 +11,23 @@ export const START_DATE = 'startDate';
 export const END_DATE = 'endDate';
 
 /**
+ * Rounding function for moment.js. Rounds the Moment provided by the context
+ * to the start of the specified time value in the specified units.
+ * @param {*} value the rounding value
+ * @param {*} timeUnit time units to specify the value
+ * @returns Moment rounded to the start of the specified time value
+ */
+moment.fn.startOfDuration = function(value, timeUnit) {
+  const getMs = (val, unit) => moment.duration(val, unit)._milliseconds;
+  const ms = getMs(value, timeUnit);
+
+  // Get UTC offset to account for potential time zone difference between
+  // customer and listing
+  const offsetMs = this._isUTC ? 0 : getMs(this.utcOffset(), 'minute');
+  return moment(Math.floor((this.valueOf() + offsetMs) / ms) * ms);
+};
+
+/**
  * Check that the given parameter is a Date object.
  *
  * @param {Date} object that should be a Date.
@@ -19,6 +36,25 @@ export const END_DATE = 'endDate';
  */
 export const isDate = d =>
   d && Object.prototype.toString.call(d) === '[object Date]' && !Number.isNaN(d.getTime());
+
+// const timeSlotMinutes = 30;
+// const firstSlotMinutes = 90;
+
+/**
+ * Calculate the greatest common factor (gcf) of two timeslot lengths
+ * to determine rounding value using the Euclidean algorithm
+ * (https://en.wikipedia.org/wiki/Euclidean_algorithm).
+ */
+const gcf = (a, b) => {
+  return a ? gcf(b % a, a) : b;
+};
+
+/**
+ * Define the rounding value.
+ * If the first time slot is shorter than general time slot,
+ * swap the parameters around so that the first parameter is the shorter one
+ */
+// const rounding = gcf(timeSlotMinutes, firstSlotMinutes);
 
 /**
  * Check if the given parameters represent the same Date value (timestamps are compared)
@@ -234,17 +270,55 @@ const findBookingUnitBoundaries = params => {
  *
  * @returns {Array} an array of localized hours.
  */
-export const findNextBoundary = (timeZone, currentMomentOrDate, sessionLength) => {
-  if (!sessionLength) {
-    sessionLength = 1;
-  }
-  const nextBoundary = moment(currentMomentOrDate)
+// export const findNextBoundary = (timeZone, currentMomentOrDate, sessionLength) => {
+//   if (!sessionLength) {
+//     sessionLength = 1;
+//   }
+//   const nextBoundary = moment(currentMomentOrDate)
+//     .clone()
+//     .tz(timeZone)
+//     .add(sessionLength, 'hour')
+//     .startOf('hour')
+//     .toDate();
+//   return nextBoundary;
+// };
+
+export const findNextBoundary = (
+  timeZone,
+  currentMomentOrDate,
+  sessionLength,
+  isFirst = false,
+  isStart = false
+) => {
+  // const increment = isFirst ? 0 : timeSlotMinutes;
+  // Use the default booking length for non-first slots
+  // Use the first booking length for first end boundary
+  // Use 0 for first start boundary
+
+  // const timeSlotMinutes = sessionLength * 60;
+  const firstSlotMinutes = sessionLength * 60;
+
+  // const newSession = sessionLength * 60;
+  // const newRounding = gcf(newSession, 60);
+  // console.log(newSession);
+  // console.log(newRounding);
+
+  const timeSlotMinutes = 30;
+  // const firstSlotMinutes = 90;
+  debugger;
+  console.log('findNextBoundary', firstSlotMinutes);
+
+  const rounding = gcf(timeSlotMinutes, firstSlotMinutes);
+  console.log('rounding', rounding);
+
+  const increment = !isFirst ? timeSlotMinutes : !isStart ? firstSlotMinutes : 0;
+
+  return moment(currentMomentOrDate)
     .clone()
     .tz(timeZone)
-    .add(sessionLength, 'hour')
-    .startOf('hour')
+    .add(increment, 'minutes')
+    .startOfDuration(rounding, 'minutes')
     .toDate();
-  return nextBoundary;
 };
 
 /**
@@ -277,7 +351,15 @@ export const findNextBoundary = (timeZone, currentMomentOrDate, sessionLength) =
  *
  * @returns {Array} an array of objects with keys timestamp and timeOfDay.
  */
-export const getSharpHours = (intl, timeZone, startTime, endTime, sessionLength) => {
+// export const getSharpHours = (intl, timeZone, startTime, endTime, sessionLength) => {
+export const getSharpHours = (
+  intl,
+  timeZone,
+  startTime,
+  endTime,
+  sessionLength,
+  isStart = false
+) => {
   if (!moment.tz.zone(timeZone)) {
     throw new Error(
       'Time zones are not loaded into moment-timezone. "getSharpHours" function uses time zones.'
@@ -291,10 +373,13 @@ export const getSharpHours = (intl, timeZone, startTime, endTime, sessionLength)
 
   // Select a moment before startTime to find next possible sharp hour.
   // I.e. startTime might be a sharp hour.
-  const millisecondBeforeStartTime = new Date(startTime.getTime() - 1);
+  // const millisecondBeforeStartTime = new Date(startTime.getTime() - 1);
 
   const boundaries = findBookingUnitBoundaries({
-    currentBoundary: findNextBoundary(timeZone, millisecondBeforeStartTime, 1),
+    // currentBoundary: findNextBoundary(timeZone, millisecondBeforeStartTime, 1),
+    // add isFirst param to determine first time slot handling
+    // add isFirst and isStart params to determine first time slot handling
+    currentBoundary: findNextBoundary(timeZone, startTime, sessionLength, true, isStart),
     startMoment: moment(startTime),
     endMoment: moment(endTime),
     nextBoundaryFn: findNextBoundary,
@@ -336,8 +421,21 @@ export const getSharpHours = (intl, timeZone, startTime, endTime, sessionLength)
  */
 export const getStartHours = (intl, timeZone, startTime, endTime, sessionLength) => {
   // debugger;
-  const hours = getSharpHours(intl, timeZone, startTime, endTime, sessionLength);
-  return hours.length < 2 ? hours : hours.slice(0, -1);
+  // const hours = getSharpHours(intl, timeZone, startTime, endTime, sessionLength);
+  const hours = getSharpHours(intl, timeZone, startTime, endTime, sessionLength, true);
+  // return hours.length < 2 ? hours : hours.slice(0, -1);
+
+  // const timeSlotMinutes = sessionLength * 60;
+  // const firstSlotMinutes = timeSlotMinutes;
+  const firstSlotMinutes = sessionLength * 60;
+  console.log('getStartHours', firstSlotMinutes);
+  const timeSlotMinutes = 30;
+  // const firstSlotMinutes = 90;
+
+  // Remove enough start times so that the first slot length can successfully be
+  // booked also from the last start time
+  const removeCount = Math.ceil(firstSlotMinutes / timeSlotMinutes);
+  return hours.length < removeCount ? [] : hours.slice(0, -removeCount);
 };
 
 /**
@@ -368,8 +466,9 @@ export const getStartHours = (intl, timeZone, startTime, endTime, sessionLength)
  * @returns {Array} an array of objects with keys timestamp and timeOfDay.
  */
 export const getEndHours = (intl, timeZone, startTime, endTime, sessionLength) => {
-  const hours = getSharpHours(intl, timeZone, startTime, endTime, sessionLength);
-  return hours.length < 2 ? [] : hours.slice(1);
+  // const hours = getSharpHours(intl, timeZone, startTime, endTime, sessionLength);
+  // return hours.length < 2 ? [] : hours.slice(1);
+  return getSharpHours(intl, timeZone, startTime, endTime, sessionLength);
 };
 
 /**
