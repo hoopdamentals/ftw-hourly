@@ -7,7 +7,7 @@ import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import { timestampToDate } from '../../util/dates';
 import { propTypes } from '../../util/types';
 import config from '../../config';
-import { Form, IconSpinner, PrimaryButton } from '../../components';
+import { Form, IconSpinner, PrimaryButton, FieldCheckbox } from '../../components';
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe';
 import FieldDateAndTimeInput from './FieldDateAndTimeInput';
 
@@ -95,6 +95,7 @@ export class BookingTimeFormComponent extends Component {
             values,
             monthlyTimeSlots,
             onFetchTimeSlots,
+            onOpenConsentWaiver,
             timeZone,
             lineItems,
             fetchLineItemsInProgress,
@@ -167,6 +168,22 @@ export class BookingTimeFormComponent extends Component {
             endDateInputProps,
           };
 
+          const termsLink = (
+            <span
+              className={css.termsLink}
+              onClick={e => {
+                e.preventDefault();
+                onOpenConsentWaiver();
+              }}
+              role="button"
+              tabIndex="0"
+            >
+              <FormattedMessage id="BookingTimeForm.consentSafetyWaiverLinkText" />
+            </span>
+          );
+
+          const consented = !!values.consentSafetyWaiver && values.consentSafetyWaiver.length > 0;
+
           return (
             <Form onSubmit={handleSubmit} className={classes} enforcePagePreloadFor="CheckoutPage">
               <FormSpy
@@ -205,8 +222,26 @@ export class BookingTimeFormComponent extends Component {
                   }
                 />
               </p>
+              <div className={css.consentSafetyWaiver}>
+                <FieldCheckbox
+                  className={css.consentSafetyWaiverCheckbox}
+                  textClassName={css.consentSafetyWaiverLabel}
+                  id="consentSafetyWaiver"
+                  name="consentSafetyWaiver"
+                  label={
+                    <span className={css.termsText}>
+                      <FormattedMessage
+                        id="BookingTimeForm.consentSafetyWaiverAcceptText"
+                        values={{ termsLink }}
+                      />
+                    </span>
+                  }
+                  value="consentSafetyWaiver"
+                  useSuccessColor
+                />
+              </div>
               <div className={submitButtonClasses}>
-                <PrimaryButton type="submit">
+                <PrimaryButton type="submit" disabled={!consented}>
                   <FormattedMessage id="BookingTimeForm.requestToBook" />
                 </PrimaryButton>
               </div>
@@ -245,6 +280,7 @@ BookingTimeFormComponent.propTypes = {
   listingId: propTypes.uuid,
   monthlyTimeSlots: object,
   onFetchTimeSlots: func.isRequired,
+  onOpenConsentWaiver: func.isRequired,
 
   onFetchTransactionLineItems: func.isRequired,
   lineItems: array,

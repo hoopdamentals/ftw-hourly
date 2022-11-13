@@ -40,6 +40,7 @@ import {
   LayoutWrapperFooter,
   Footer,
   BookingPanel,
+  ConsentWaiver,
 } from '../../components';
 import { EnquiryForm } from '../../forms';
 import { TopbarContainer, NotFoundPage } from '../../containers';
@@ -84,6 +85,7 @@ export class ListingPageComponent extends Component {
       pageClassNames: [],
       imageCarouselOpen: false,
       enquiryModalOpen: enquiryModalOpenForListingId === params.id,
+      consentModalOpen: false,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -450,6 +452,7 @@ export class ListingPageComponent extends Component {
                   {/* <SectionFeaturesMaybe options={yogaStylesOptions} publicData={publicData} />                 
                   <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} /> */}
                 </div>
+
                 <BookingPanel
                   className={css.bookingPanel}
                   listing={currentListing}
@@ -461,6 +464,7 @@ export class ListingPageComponent extends Component {
                   onManageDisableScrolling={onManageDisableScrolling}
                   monthlyTimeSlots={monthlyTimeSlots}
                   onFetchTimeSlots={onFetchTimeSlots}
+                  onOpenConsentWaiver={() => this.setState({ consentModalOpen: true })}
                   onFetchTransactionLineItems={onFetchTransactionLineItems}
                   lineItems={lineItems}
                   fetchLineItemsInProgress={fetchLineItemsInProgress}
@@ -468,6 +472,20 @@ export class ListingPageComponent extends Component {
                 />
               </div>
             </div>
+            <Modal
+              id="ListingPage.consentWaiver"
+              isOpen={this.state.consentModalOpen}
+              onClose={() => this.setState({ consentModalOpen: false })}
+              usePortal
+              onManageDisableScrolling={onManageDisableScrolling}
+            >
+              <div className={css.termsWrapper}>
+                <h2 className={css.termsHeading}>
+                  <FormattedMessage id="ListingPage.consentWaiverHeading" />
+                </h2>
+                <ConsentWaiver />
+              </div>
+            </Modal>
             <Modal
               id="ListingPage.enquiry"
               contentClassName={css.enquiryModalContent}

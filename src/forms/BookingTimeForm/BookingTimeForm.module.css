@@ -89,3 +89,46 @@
     width: 100%;
   }
 }
+
+.consentSafetyWaiver {
+  padding-top: 6px;
+  margin-bottom: 36px;
+
+  @media (--viewportMedium) {
+    padding-top: 8px;
+    margin-top: 0px;
+    margin-bottom: 48px;
+  }
+}
+
+.consentSafetyWaiverCheckbox {
+  display: inline-block;
+  padding: 2px 0 3px 0;
+  margin-left: 20px;
+
+  @media (--viewportMedium) {
+    padding: 1px 0 0px 0;
+    margin-left: 0px;
+  }
+}
+
+.consentSafetyWaiverLabel {
+  @apply --marketplaceH5FontStyles;
+  color: var(--matterColor);
+  margin-top: 3px;
+  margin-bottom: 0px;
+  cursor: pointer;
+}
+
+.termsText {
+  @apply --marketplaceModalHelperText;
+}
+
+.termsLink {
+  @apply --marketplaceModalHelperLink;
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

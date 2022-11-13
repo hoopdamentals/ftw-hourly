@@ -68,6 +68,7 @@ const BookingPanel = props => {
     location,
     intl,
     onFetchTransactionLineItems,
+    onOpenConsentWaiver,
     lineItems,
     fetchLineItemsInProgress,
     fetchLineItemsError,
@@ -156,6 +157,7 @@ const BookingPanel = props => {
             endDatePlaceholder={intl.formatDate(TODAY, dateFormattingOptions)}
             timeZone={timeZone}
             onFetchTransactionLineItems={onFetchTransactionLineItems}
+            onOpenConsentWaiver={onOpenConsentWaiver}
             lineItems={lineItems}
             fetchLineItemsInProgress={fetchLineItemsInProgress}
             fetchLineItemsError={fetchLineItemsError}
@@ -216,6 +218,7 @@ BookingPanel.propTypes = {
   onFetchTimeSlots: func.isRequired,
   monthlyTimeSlots: object,
   onFetchTransactionLineItems: func.isRequired,
+  onOpenConsentWaiver: func.isRequired,
   lineItems: array,
   fetchLineItemsInProgress: bool.isRequired,
   fetchLineItemsError: propTypes.error,
