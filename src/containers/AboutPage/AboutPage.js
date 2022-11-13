@@ -45,7 +45,7 @@ const AboutPage = () => {
               </p>
               
               <p>
-              Whether you need a trainer to help improve your ball handling, your shot, a videographer to record a game or scrimmage, an IQ coach to minimize mistakes or you just need to rent a gym for a couple of hours, Hoopdamentals can help!!!
+              Whether you need a provider to help improve your ball handling, your shot, a videographer to record a game or scrimmage, an IQ coach to minimize mistakes or you just need to rent a gym for a couple of hours, Hoopdamentals can help!!!
               </p>        
             </div>
           </div>

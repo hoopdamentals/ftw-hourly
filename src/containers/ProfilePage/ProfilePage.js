@@ -93,7 +93,7 @@ export class ProfilePageComponent extends Component {
         {hasBio ? <p className={css.bio}>{bio}</p> : null}
         {!hasListings ? (
           <p>
-            <span className={css.bio}>{'Hey there. If you are a trainer, click '}</span>
+            <span className={css.bio}>{'Hey there. If you are a provider, click '}</span>
             <NamedLink className={css.editLink} name="NewListingPage">
               {'here'}
             </NamedLink>

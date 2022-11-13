@@ -74,7 +74,7 @@ const Footer = props => {
                 <li className={css.listItem}>
                   <ExternalLink
                     className={css.link}
-                    href={'https://www.hoopdamentals.com/help-trainers'}
+                    href={'https://www.hoopdamentals.com/help-providers'}
                   >
                     <FormattedMessage id="Footer.toCoachHelpPage" />
                   </ExternalLink>
