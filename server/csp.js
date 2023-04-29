@@ -39,11 +39,11 @@ const defaultDirectives = {
     'sentry.io',
     '*.stripe.com',
 
-    'www.facebook.com/tr', //  <-- for Facebook Pixel tracking
+    'https://www.facebook.com/tr/', //  <-- for Facebook Pixel tracking
     'graph.facebook.com',
   ],
   fontSrc: [self, data, 'assets-sharetribecom.sharetribe.com', 'fonts.gstatic.com'],
-  frameSrc: [self, '*.stripe.com'],
+  frameSrc: [self, '*.stripe.com', 'https://www.facebook.com/tr/'],
   imgSrc: [
     self,
     data,
