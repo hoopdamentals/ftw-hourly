@@ -38,6 +38,8 @@ const defaultDirectives = {
 
     'sentry.io',
     '*.stripe.com',
+
+    'www.facebook.com/tr', //  <-- for Facebook Pixel tracking
   ],
   fontSrc: [self, data, 'assets-sharetribecom.sharetribe.com', 'fonts.gstatic.com'],
   frameSrc: [self, '*.stripe.com'],
@@ -66,6 +68,8 @@ const defaultDirectives = {
     'stats.g.doubleclick.net',
 
     '*.stripe.com',
+
+    'www.facebook.com', // <-- for Facebook Pixel tracking
   ],
   scriptSrc: [
     self,
@@ -77,6 +81,10 @@ const defaultDirectives = {
     'www.googletagmanager.com',
     '*.google-analytics.com',
     'js.stripe.com',
+    'pixel.advertising.com',
+    'pixel.rubiconproject.com',
+    'www.facebook.com',
+    'connect.facebook.net',
   ],
   styleSrc: [self, unsafeInline, 'fonts.googleapis.com', 'api.mapbox.com'],
 };
